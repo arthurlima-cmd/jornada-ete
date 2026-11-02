@@ -16,12 +16,13 @@ void main() {
     expect(modalidadePeloNome('1º TDG A'), modalidadeIntegrado);
     expect(modalidadePeloNome('2º TND'), modalidadeIntegrado);
     expect(modalidadePeloNome('3º STDG'), modalidadeSubsequente);
+    expect(modalidadePeloNome('1º STND'), modalidadeSubsequente);
   });
 
-  test('turmas oficiais: 12 do integrado e 3 do subsequente', () {
+  test('turmas oficiais: 12 do integrado e 6 do subsequente', () {
     final sub = turmasDaEscola.where((t) => t.modalidade == modalidadeSubsequente);
     expect(turmasDaEscola.length - sub.length, 12);
-    expect(sub.length, 3);
+    expect(sub.length, 6);
   });
 
   test('slug remove acentos e símbolos', () {

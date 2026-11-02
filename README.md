@@ -29,7 +29,7 @@ Também é possível gerar manualmente: aba **Actions → Gerar APK → Run work
    como professor aparece com `solicitou_professor = true` na coleção `usuarios`.
    No console, edite o documento e mude o campo `tipo` para `professor`.
 4. **Turmas.** Entre como professor → **Início → Turmas → Carregar turmas da escola**.
-   Isso cadastra as 12 turmas do integrado e as 3 do subsequente.
+   Isso cadastra as 12 turmas do integrado e as 6 do subsequente.
 
 ## Coleções do Firestore
 
