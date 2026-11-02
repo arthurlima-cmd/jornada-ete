@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import '../constantes.dart';
 import '../dados/modelos.dart';
@@ -39,6 +42,38 @@ class _CadastroHorariosTelaState extends State<CadastroHorariosTela> {
     if (salvo == true && mounted) mostrarAviso(context, 'Horário salvo!');
   }
 
+  bool _importando = false;
+
+  Future<void> _importarOficial() async {
+    final ok = await confirmar(context,
+        titulo: 'Importar horário oficial 2026',
+        mensagem: 'Cadastrar todas as aulas do HORÁRIO DE AULAS 2026 – ETEADC '
+            '(12 turmas do integrado e 4 do subsequente)? Você ficará como '
+            'responsável por essas aulas no app. Aulas cadastradas por outros '
+            'professores não serão alteradas.',
+        textoConfirmar: 'Importar');
+    if (!ok) return;
+    setState(() => _importando = true);
+    try {
+      final texto = await rootBundle.loadString('assets/dados/horario_2026.json');
+      final registros = (jsonDecode(texto) as List)
+          .map((e) => Map<String, dynamic>.from(e as Map))
+          .toList();
+      final (gravadas, mantidas) =
+          await Repo.importarHorarioOficial(widget.professor, registros);
+      if (!mounted) return;
+      mostrarAviso(
+          context,
+          mantidas == 0
+              ? '$gravadas aulas importadas.'
+              : '$gravadas aulas importadas; $mantidas mantidas (de outros professores).');
+    } catch (e) {
+      if (mounted) mostrarAviso(context, mensagemDeErro(e), erro: true);
+    } finally {
+      if (mounted) setState(() => _importando = false);
+    }
+  }
+
   Future<void> _excluir(Horario h) async {
     final ok = await confirmar(context,
         titulo: 'Excluir aula',
@@ -60,6 +95,21 @@ class _CadastroHorariosTelaState extends State<CadastroHorariosTela> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          FilledButton.tonalIcon(
+            style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+            onPressed: _importando ? null : _importarOficial,
+            icon: _importando
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.cloud_download_outlined),
+            label: Text(_importando
+                ? 'Importando...'
+                : 'Importar horário oficial 2026'),
+          ),
+          const SizedBox(height: 16),
           CampoTurma(
             valor: _turma,
             onChanged: (v) => setState(() => _turma = v),
@@ -121,6 +171,10 @@ class _FormAulaState extends State<_FormAula> {
       TextEditingController(text: widget.existente?.disciplina ?? '');
   late final _conteudo =
       TextEditingController(text: widget.existente?.conteudo ?? '');
+  late final _professorNome = TextEditingController(
+      text: (widget.existente?.professorNome.isNotEmpty ?? false)
+          ? widget.existente!.professorNome
+          : widget.professor.nome);
   bool _salvando = false;
   String? _erro;
 
@@ -128,6 +182,7 @@ class _FormAulaState extends State<_FormAula> {
   void dispose() {
     _disciplina.dispose();
     _conteudo.dispose();
+    _professorNome.dispose();
     super.dispose();
   }
 
@@ -145,6 +200,7 @@ class _FormAulaState extends State<_FormAula> {
         horario: widget.horario,
         disciplina: _disciplina.text.trim(),
         conteudo: _conteudo.text.trim(),
+        professorNome: _professorNome.text.trim(),
       );
       if (mounted) Navigator.of(context).pop(true);
     } catch (e) {
@@ -179,6 +235,14 @@ class _FormAulaState extends State<_FormAula> {
               decoration: const InputDecoration(labelText: 'Disciplina'),
               validator: (v) =>
                   (v ?? '').trim().isEmpty ? 'Informe a disciplina.' : null,
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _professorNome,
+              textCapitalization: TextCapitalization.words,
+              decoration: const InputDecoration(labelText: 'Professor(a)'),
+              validator: (v) =>
+                  (v ?? '').trim().isEmpty ? 'Informe o(a) professor(a).' : null,
             ),
             const SizedBox(height: 12),
             TextFormField(

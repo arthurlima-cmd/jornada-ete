@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jornada_ete/constantes.dart';
 
@@ -27,5 +30,28 @@ void main() {
 
   test('slug remove acentos e símbolos', () {
     expect(slug('1º TDG A'), '1TDGA');
+  });
+
+  test('nomes de professor combinam sem acento', () {
+    expect(nomeCombina('Ana Nayara', 'Ana Nayara Silva'), isTrue);
+    expect(nomeCombina('Ítalo', 'italo souza'), isTrue);
+    expect(nomeCombina('Géssica', 'Gessica Lima'), isTrue);
+    expect(nomeCombina('Arthur', 'Lorena Arthuria'), isFalse);
+  });
+
+  test('horário oficial 2026: turmas, dias e aulas válidos', () {
+    final dados = jsonDecode(
+        File('assets/dados/horario_2026.json').readAsStringSync()) as List;
+    expect(dados.length, 628);
+    final turmas = turmasPadrao.toSet();
+    for (final r in dados.cast<Map<String, dynamic>>()) {
+      expect(turmas.contains(r['turma']), isTrue, reason: r['turma']);
+      expect(diasSemana.contains(r['dia']), isTrue);
+      final n = r['aula'] as int;
+      expect(n >= 1 && n <= aulasDaModalidade(modalidadePeloNome(r['turma'])).length,
+          isTrue, reason: '$r');
+      expect((r['disciplina'] as String).isNotEmpty, isTrue);
+      expect((r['professor'] as String).isNotEmpty, isTrue);
+    }
   });
 }

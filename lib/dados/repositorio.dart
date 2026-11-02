@@ -138,16 +138,26 @@ class Repo {
           .snapshots()
           .map(_ordenarHorarios);
 
+  /// Aulas do professor no dia: as que ele cadastrou e as do horário oficial
+  /// em que o nome dele aparece (ex.: "Ana Nayara" para "Ana Nayara Silva").
   static Stream<List<Horario>> horariosDoProfessor(Usuario prof, String dia) =>
       _col('horarios')
-          .where('professor', isEqualTo: prof.ref)
           .where('dia_semana', isEqualTo: dia)
           .snapshots()
-          .map(_ordenarHorarios);
+          .map((s) => _ordenarHorarios(s)
+              .where((h) =>
+                  h.ehDe(prof.uid) ||
+                  (prof.nome.isNotEmpty && nomeCombina(h.professorNome, prof.nome)))
+              .toList());
 
   /// Um documento por turma + dia + aula: impossível duplicar a mesma aula.
   static String idHorario(String turma, String dia, String horario) =>
       '${slug(turma)}_${dia}_${numeroDaAula(horario)}';
+
+  static bool _mesmoProfessor(String a, String b) =>
+      a.isNotEmpty &&
+      b.isNotEmpty &&
+      (semAcento(a) == semAcento(b) || nomeCombina(a, b) || nomeCombina(b, a));
 
   static Future<void> salvarHorario({
     required Usuario professor,
@@ -156,31 +166,35 @@ class Repo {
     required String horario,
     required String disciplina,
     required String conteudo,
+    String? professorNome,
   }) async {
     final id = idHorario(turma, dia, horario);
     final ref = _col('horarios').doc(id);
+    final nomeProf = (professorNome ?? '').trim().isEmpty
+        ? professor.nome
+        : professorNome!.trim();
 
-    // 1) A aula já pertence a outro professor?
+    // 1) A aula já pertence a outro usuário?
     final atual = await ref.get();
     if (atual.exists) {
       final h = Horario.doDoc(atual);
       if (!h.ehDe(professor.uid)) {
         throw ErroApp(
-            'Esta aula já está ocupada por ${h.professorNome.isEmpty ? 'outro professor' : h.professorNome}.');
+            'Esta aula foi cadastrada por outra pessoa (${h.professorNome.isEmpty ? 'outro professor' : h.professorNome}).');
       }
     }
 
-    // 2) O professor já dá aula em outra turma neste mesmo horário?
-    final conflito = await _col('horarios')
-        .where('professor', isEqualTo: professor.ref)
+    // 2) O(a) professor(a) da aula já está em outra turma neste horário?
+    final mesmoHorario = await _col('horarios')
         .where('dia_semana', isEqualTo: dia)
         .where('horario', isEqualTo: horario)
         .get();
-    for (final d in conflito.docs) {
-      if (d.id != id) {
-        final outra = Horario.doDoc(d);
+    for (final d in mesmoHorario.docs) {
+      if (d.id == id) continue;
+      final outra = Horario.doDoc(d);
+      if (_mesmoProfessor(outra.professorNome, nomeProf)) {
         throw ErroApp(
-            'Você já tem aula na turma ${outra.turma} neste horário.');
+            '$nomeProf já tem aula na turma ${outra.turma} neste horário.');
       }
     }
 
@@ -191,9 +205,62 @@ class Repo {
       'dia_semana': dia,
       'turma': turma,
       'professor': professor.ref,
-      'professor_nome': professor.nome,
+      'professor_nome': nomeProf,
       'atualizado_em': FieldValue.serverTimestamp(),
     });
+  }
+
+  /// Grava o HORÁRIO DE AULAS 2026 oficial (assets/dados/horario_2026.json).
+  /// Quem importa fica como responsável pelas aulas (pode editar/excluir);
+  /// o nome exibido é o do(a) professor(a) da grade oficial.
+  /// Aulas já cadastradas por outra pessoa são mantidas.
+  /// Retorna (gravadas, mantidas).
+  static Future<(int, int)> importarHorarioOficial(
+      Usuario responsavel, List<Map<String, dynamic>> registros) async {
+    final existentes = await _col('horarios').get();
+    final donoPorId = {
+      for (final d in existentes.docs) d.id: Horario.doDoc(d),
+    };
+
+    var gravadas = 0;
+    var mantidas = 0;
+    var lote = _db.batch();
+    var noLote = 0;
+
+    for (final r in registros) {
+      final turma = r['turma'] as String;
+      final dia = r['dia'] as String;
+      final n = (r['aula'] as num).toInt();
+      final aulas = aulasDaTurma(turma);
+      if (n < 1 || n > aulas.length) continue;
+      final horario = aulas[n - 1];
+      final id = idHorario(turma, dia, horario);
+
+      final atual = donoPorId[id];
+      if (atual != null && !atual.ehDe(responsavel.uid)) {
+        mantidas++;
+        continue;
+      }
+      lote.set(_col('horarios').doc(id), {
+        'aulas': r['disciplina'] as String,
+        'conteudo': '',
+        'horario': horario,
+        'dia_semana': dia,
+        'turma': turma,
+        'professor': responsavel.ref,
+        'professor_nome': r['professor'] as String,
+        'oficial': true,
+        'atualizado_em': FieldValue.serverTimestamp(),
+      });
+      gravadas++;
+      if (++noLote == 400) {
+        await lote.commit();
+        lote = _db.batch();
+        noLote = 0;
+      }
+    }
+    if (noLote > 0) await lote.commit();
+    return (gravadas, mantidas);
   }
 
   static Future<void> excluirHorario(String id) =>

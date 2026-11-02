@@ -63,16 +63,23 @@ class _GradeDoDiaState extends State<GradeDoDia> {
                 !numeros.contains(numeroDaAula(h.horario)))
             .toList(); // registros antigos fora do padrão
 
+        final pausas =
+            intervalosDaModalidade[Repo.modalidadeDaTurma(widget.turma)] ??
+                const <int, String>{};
+
         return Column(
           children: [
-            for (final horario in aulas)
+            if (pausas[0] != null) _Pausa(pausas[0]!),
+            for (var i = 0; i < aulas.length; i++) ...[
               _CartaoAula(
-                horario: horario,
-                aula: porNumero[numeroDaAula(horario)],
+                horario: aulas[i],
+                aula: porNumero[numeroDaAula(aulas[i])],
                 professor: widget.professor,
                 onEditar: widget.onEditar,
                 onExcluir: widget.onExcluir,
               ),
+              if (pausas[i + 1] != null) _Pausa(pausas[i + 1]!),
+            ],
             for (final h in avulsas)
               _CartaoAula(
                 horario: h.horario.isEmpty ? 'Sem horário' : h.horario,
@@ -148,7 +155,8 @@ class _CartaoAula extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        hora,
+                        hora.replaceAll('–', '\n'),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 12,
                           color: livre ? Cores.textoSecundario : Colors.white70,
@@ -227,6 +235,32 @@ class _CartaoAula extends StatelessWidget {
   }
 }
 
+
+/// Faixa discreta para intervalo, almoço ou lanche.
+class _Pausa extends StatelessWidget {
+  final String texto;
+  const _Pausa(this.texto);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        children: [
+          const Expanded(child: Divider(color: Cores.borda)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              texto,
+              style: const TextStyle(fontSize: 12, color: Cores.textoSecundario),
+            ),
+          ),
+          const Expanded(child: Divider(color: Cores.borda)),
+        ],
+      ),
+    );
+  }
+}
 
 /// Linha informativa: "Integrado · 9 aulas por dia" / "Subsequente · 5 aulas por noite".
 class InfoModalidade extends StatelessWidget {

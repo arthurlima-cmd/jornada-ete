@@ -28,26 +28,40 @@ const Map<String, String> nomesModalidade = {
 /// Integrado: 9 aulas por dia, de segunda a sexta (formato do campo `horario`).
 /// Começam com o número da aula, então a ordem alfabética já é a ordem certa.
 const List<String> aulasIntegrado = [
-  '1ª aula · 07:40',
-  '2ª aula · 08:30',
-  '3ª aula · 09:40',
-  '4ª aula · 10:30',
-  '5ª aula · 11:20',
-  '6ª aula · 13:00',
-  '7ª aula · 13:50',
-  '8ª aula · 15:00',
-  '9ª aula · 15:50',
+  '1ª aula · 07:40–08:30',
+  '2ª aula · 08:30–09:20',
+  '3ª aula · 09:40–10:30',
+  '4ª aula · 10:30–11:20',
+  '5ª aula · 11:20–12:10',
+  '6ª aula · 13:00–13:50',
+  '7ª aula · 13:50–14:40',
+  '8ª aula · 15:00–15:50',
+  '9ª aula · 15:50–16:40',
 ];
 
-/// Subsequente: 5 aulas por noite, de segunda a sexta.
-/// ATENÇÃO: horários provisórios — troque pelos horários oficiais da escola.
+/// Subsequente: 5 aulas por noite, de segunda a sexta, conforme o
+/// HORÁRIO DE AULAS 2026 – ETEADC: dois blocos presenciais (cada um com
+/// 2 aulas) e uma aula EaD (terças e quintas).
 const List<String> aulasSubsequente = [
-  '1ª aula · 18:30',
-  '2ª aula · 19:10',
-  '3ª aula · 19:50',
-  '4ª aula · 20:45',
-  '5ª aula · 21:25',
+  '1ª aula · 19:15–20:25',
+  '2ª aula · 19:15–20:25',
+  '3ª aula · 20:25–21:30',
+  '4ª aula · 20:25–21:30',
+  '5ª aula · EaD',
 ];
+
+/// Pausas mostradas na grade, depois da aula de número indicado
+/// (0 = antes da primeira aula).
+const Map<String, Map<int, String>> intervalosDaModalidade = {
+  modalidadeIntegrado: {
+    2: 'Intervalo · 09:20–09:40',
+    5: 'Almoço · 12:10–13:00',
+    7: 'Intervalo · 14:40–15:00',
+  },
+  modalidadeSubsequente: {
+    0: 'Lanche · 19:00–19:15',
+  },
+};
 
 List<String> aulasDaModalidade(String modalidade) =>
     modalidade == modalidadeSubsequente ? aulasSubsequente : aulasIntegrado;
@@ -134,15 +148,35 @@ bool hojeEhDiaLetivo() => DateTime.now().weekday <= 5;
 /// Remove acentos, espaços e símbolos para montar IDs de documento.
 String slug(String texto) => texto.replaceAll(RegExp(r'[^A-Za-z0-9]'), '');
 
-/// Hora "07:40" a partir do texto "1ª aula · 07:40" (para ordenar por hora).
+/// Hora "07:40–08:30" a partir do texto "1ª aula · 07:40–08:30" (para ordenar por hora).
 String horaDaAula(String horario) {
   final partes = horario.split('·');
   return partes.length > 1 ? partes[1].trim() : horario;
 }
 
-/// Número da aula (1..9) a partir do texto "1ª aula · 07:40".
+/// Número da aula (1..9) a partir do texto "1ª aula · 07:40–08:30".
 String numeroDaAula(String horario) =>
     horario.isEmpty ? '0' : horario.substring(0, 1);
+
+/// Texto em maiúsculas e sem acentos, para comparar nomes.
+String semAcento(String texto) {
+  const de = 'ÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇÑáàâãäéèêëíìîïóòôõöúùûüçñ';
+  const para = 'AAAAAEEEEIIIIOOOOOUUUUCNaaaaaeeeeiiiiooooouuuucn';
+  final b = StringBuffer();
+  for (final c in texto.split('')) {
+    final i = de.indexOf(c);
+    b.write(i >= 0 ? para[i] : c);
+  }
+  return b.toString().toUpperCase().trim();
+}
+
+/// O nome do professor na grade ("Ana Nayara") pertence ao usuário
+/// ("Ana Nayara Silva")? Todas as palavras da grade precisam estar no nome.
+bool nomeCombina(String nomeNaGrade, String nomeDoUsuario) {
+  final grade = semAcento(nomeNaGrade).split(RegExp(r'\s+')).where((p) => p.isNotEmpty);
+  final usuario = semAcento(nomeDoUsuario).split(RegExp(r'\s+')).toSet();
+  return grade.isNotEmpty && grade.every(usuario.contains);
+}
 
 // ---------------------------------------------------------------------------
 // Conteúdo institucional (vindo do protótipo, com erros de digitação corrigidos)
