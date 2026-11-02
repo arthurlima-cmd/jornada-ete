@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../dados/modelos.dart';
+import '../servicos/notificacoes.dart';
 import '../tema.dart';
 import '../widgets/comuns.dart';
 import 'cadastro_horarios.dart';
@@ -25,6 +26,7 @@ class AbaPerfil extends StatelessWidget {
         textoConfirmar: 'Sair');
     if (!ok) return;
     if (context.mounted) Navigator.of(context).popUntil((r) => r.isFirst);
+    await Notificacoes.desativar();
     await FirebaseAuth.instance.signOut();
   }
 

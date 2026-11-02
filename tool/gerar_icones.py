@@ -111,3 +111,33 @@ with open(os.path.join(IOS, "Contents.json"), "w", encoding="utf-8") as f:
     json.dump({"images": imagens, "info": {"version": 1, "author": "xcode"}}, f, indent=2)
 print("Ícones iOS gerados em", IOS)
 
+# ------------------------------------------------------ ícone de notificação
+# Android exige ícone pequeno branco e transparente (24 dp): "ETE" em negrito.
+from PIL import ImageFont
+
+FONTE = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+for nome, fator in DENSIDADES.items():
+    px = round(24 * fator)
+    img = Image.new("RGBA", (px, px), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    tamanho = px
+    while True:
+        f = ImageFont.truetype(FONTE, tamanho)
+        x0, y0, x1, y1 = d.textbbox((0, 0), "ETE", font=f)
+        if x1 - x0 <= px * 0.92 or tamanho < 4:
+            break
+        tamanho -= 1
+    d.text(((px - (x1 - x0)) / 2 - x0, (px - (y1 - y0)) / 2 - y0), "ETE",
+           font=f, fill=(255, 255, 255, 255))
+    pasta = os.path.join(SAIDA, f"drawable-{nome}")
+    os.makedirs(pasta, exist_ok=True)
+    img.save(os.path.join(pasta, "ic_stat_notificacao.png"), optimize=True)
+
+with open(os.path.join(SAIDA, "values", "cores_notificacao.xml"), "w", encoding="utf-8") as f:
+    f.write(
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        "<resources>\n"
+        '    <color name="cor_notificacao">#091540</color>\n'
+        "</resources>\n"
+    )
+print("Ícone de notificação gerado")

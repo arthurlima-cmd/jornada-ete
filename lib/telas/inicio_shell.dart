@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../dados/modelos.dart';
+import '../servicos/notificacoes.dart';
 import 'aba_avisos.dart';
 import 'aba_horarios.dart';
 import 'aba_inicio.dart';
@@ -20,6 +21,34 @@ class _InicioShellState extends State<InicioShell> {
   int _aba = 0;
 
   void _irPara(int i) => setState(() => _aba = i);
+
+  void _abrirAvisos() {
+    if (!mounted) return;
+    Navigator.of(context).popUntil((r) => r.isFirst);
+    _irPara(3);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Notificacoes.abrirAvisos.addListener(_abrirAvisos);
+    Notificacoes.configurar(widget.usuario);
+  }
+
+  @override
+  void didUpdateWidget(covariant InicioShell antigo) {
+    super.didUpdateWidget(antigo);
+    if (antigo.usuario.turma != widget.usuario.turma ||
+        antigo.usuario.tipo != widget.usuario.tipo) {
+      Notificacoes.configurar(widget.usuario); // trocou de turma
+    }
+  }
+
+  @override
+  void dispose() {
+    Notificacoes.abrirAvisos.removeListener(_abrirAvisos);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

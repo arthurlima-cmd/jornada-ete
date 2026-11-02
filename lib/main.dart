@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'firebase_options.dart';
+import 'servicos/notificacoes.dart';
 import 'tema.dart';
 import 'telas/splash.dart';
 
@@ -52,6 +53,7 @@ class JornadaEteApp extends StatelessWidget {
     return MaterialApp(
       title: 'Jornada ETE',
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: Notificacoes.mensageiro,
       theme: temaJornada(),
       locale: const Locale('pt', 'BR'),
       supportedLocales: const [Locale('pt', 'BR')],

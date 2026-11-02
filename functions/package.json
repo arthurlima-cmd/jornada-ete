@@ -1,0 +1,13 @@
+{
+  "name": "jornada-ete-functions",
+  "description": "Envia notificações quando um aviso, evento ou atividade é publicado no Jornada ETE",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0",
+    "firebase-functions": "^6.3.0"
+  }
+}

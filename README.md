@@ -69,3 +69,27 @@ python3 tool/gerar_firebase_options.py com.mycompany.appete
 python3 tool/ajustar_android.py com.mycompany.appete
 flutter run            # ou: flutter build apk --release
 ```
+
+## Horário oficial 2026
+
+O arquivo `assets/dados/horario_2026.json` traz as 628 aulas do
+**HORÁRIO DE AULAS 2026 – ETEADC** (12 turmas do integrado e 4 do subsequente).
+Para gravá-las no Firestore: entre como professor → **Início → Cadastrar horários →
+Importar horário oficial 2026**.
+
+## Notificações de avisos, eventos e atividades
+
+O app inscreve cada celular nos tópicos `todos` e `turma_<turma>` (ex.: `turma_1TDGA`).
+A Cloud Function `functions/index.js` envia a notificação quando um aviso é publicado.
+
+Publicar a função (uma vez; exige o **plano Blaze** do Firebase):
+
+1. Console do Firebase → ⚙️ → **Uso e faturamento** → mudar para o plano **Blaze**.
+2. Abra o **Cloud Shell** em https://shell.cloud.google.com (com a conta dona do projeto) e rode:
+
+```bash
+git clone https://github.com/arthurlima-cmd/jornada-ete.git
+cd jornada-ete/functions && npm install && cd ..
+npx -y firebase-tools@latest login --no-localhost
+npx -y firebase-tools@latest deploy --only functions --project compettec-ui6cbh
+```

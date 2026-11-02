@@ -66,6 +66,24 @@ if "android.intent.action.DIAL" not in m:
     else:
         m = m.replace("</manifest>", "    <queries>" + intents + "\n    </queries>\n</manifest>", 1)
 
+# Notificações: permissão do Android 13+ e ícone/cor padrão das notificações.
+if "android.permission.POST_NOTIFICATIONS" not in m:
+    m = m.replace(
+        "<application",
+        '<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>\n    <application',
+        1,
+    )
+if "default_notification_icon" not in m:
+    meta = """
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_notificacao" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/cor_notificacao" />
+        <activity"""
+    m = m.replace("\n        <activity", meta, 1) if "\n        <activity" in m else m.replace("<activity", meta.strip() + "", 1)
+
 with open(manifest, "w", encoding="utf-8") as f:
     f.write(m)
 print("AndroidManifest.xml ajustado")

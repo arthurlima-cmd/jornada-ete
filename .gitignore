@@ -26,3 +26,6 @@ ios/*
 !ios/Runner/
 ios/Runner/*
 !ios/Runner/GoogleService-Info.plist
+
+# Cloud Functions
+functions/node_modules/
