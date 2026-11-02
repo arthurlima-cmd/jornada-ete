@@ -1,70 +1,172 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../constantes.dart';
 import '../tema.dart';
 import 'portao.dart';
 
-/// Abertura: mostra a marca por ~2 s e segue SEM deixar a splash no histórico.
-/// (No protótipo, ela navegava em 1 s, antes de a 2ª logo aparecer, e
-/// três áreas de toque podiam abrir páginas duplicadas.)
+/// Animação inicial, igual à página "animacaoinicio" do FlutterFlow:
+///
+///   0,0 s – 0,6 s  logo Artez aparece (fade in)
+///   0,6 s – 2,0 s  logo Artez fica na tela
+///   2,0 s – 2,6 s  logo Artez some (fade out)
+///   2,6 s – 3,2 s  logo da ETE aparece (fade in)
+///   3,8 s          segue para o app
+///
+/// Correções em relação ao protótipo:
+///  - navegava em 1 s, antes de a logo da ETE aparecer; agora espera a animação;
+///  - deixava a splash no histórico (pop + push); agora a substitui;
+///  - três áreas de toque abriam páginas duplicadas (uma ia para o login);
+///    agora um toque só pula a animação, uma única vez;
+///  - BoxFit.fill distorcia as logos; agora BoxFit.contain com largura responsiva.
 class SplashTela extends StatefulWidget {
   const SplashTela({super.key});
   @override
   State<SplashTela> createState() => _SplashTelaState();
 }
 
-class _SplashTelaState extends State<SplashTela> {
+class _SplashTelaState extends State<SplashTela>
+    with SingleTickerProviderStateMixin {
+  static const _artez = 'assets/images/Artez.png';
+  static const _logoEte = 'assets/images/ete_cavalcanti_trans_letra_branca_22.png';
+
+  late final AnimationController _ctrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 3200),
+  );
+
+  // Pesos em milissegundos (somam 3200).
+  late final Animation<double> _opacidadeArtez = TweenSequence<double>([
+    TweenSequenceItem(
+      tween: Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeInOut)),
+      weight: 600,
+    ),
+    TweenSequenceItem(tween: ConstantTween(1.0), weight: 1400),
+    TweenSequenceItem(
+      tween: Tween(begin: 1.0, end: 0.0).chain(CurveTween(curve: Curves.easeInOut)),
+      weight: 600,
+    ),
+    TweenSequenceItem(tween: ConstantTween(0.0), weight: 600),
+  ]).animate(_ctrl);
+
+  late final Animation<double> _opacidadeEte = TweenSequence<double>([
+    TweenSequenceItem(tween: ConstantTween(0.0), weight: 2600),
+    TweenSequenceItem(
+      tween: Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeInOut)),
+      weight: 600,
+    ),
+  ]).animate(_ctrl);
+
+  bool _saiu = false;
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 2000), () {
-      if (!mounted) return;
-      Navigator.of(context).pushReplacement(
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 400),
-          pageBuilder: (_, __, ___) => const PortaoAuth(),
-          transitionsBuilder: (_, a, __, child) =>
-              FadeTransition(opacity: a, child: child),
-        ),
-      );
+    _ctrl.forward().whenComplete(() async {
+      await Future.delayed(const Duration(milliseconds: 600));
+      _seguir();
     });
   }
 
   @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  void _seguir() {
+    if (_saiu || !mounted) return;
+    _saiu = true;
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 400),
+        pageBuilder: (_, __, ___) => const PortaoAuth(),
+        transitionsBuilder: (_, a, __, child) =>
+            FadeTransition(opacity: a, child: child),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final largura = MediaQuery.sizeOf(context).width;
+    final tamanho = math.min(largura * 0.8, 320.0);
+
     return Scaffold(
       backgroundColor: Cores.azul,
-      body: Center(
-        child: TweenAnimationBuilder<double>(
-          tween: Tween(begin: 0, end: 1),
-          duration: const Duration(milliseconds: 900),
-          builder: (context, v, child) => Opacity(
-            opacity: v,
-            child: Transform.translate(offset: Offset(0, 20 * (1 - v)), child: child),
-          ),
-          child: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.school_rounded, size: 96, color: Colors.white),
-              SizedBox(height: 16),
-              Text(
-                'Jornada ETE',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 34,
-                  fontWeight: FontWeight.w800,
+      body: SafeArea(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: _seguir, // toque pula a animação (uma única vez)
+          child: Semantics(
+            label: 'Jornada ETE, $nomeEscola. Toque para continuar.',
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                FadeTransition(
+                  opacity: _opacidadeArtez,
+                  child: Image.asset(
+                    _artez,
+                    width: tamanho,
+                    height: tamanho,
+                    fit: BoxFit.contain,
+                    errorBuilder: (_, __, ___) => const _MarcaProvisoria(
+                      icone: Icons.palette_outlined,
+                      titulo: 'Artez',
+                    ),
+                  ),
                 ),
-              ),
-              SizedBox(height: 6),
-              Text(
-                nomeEscola,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white70, fontSize: 15),
-              ),
-            ],
+                FadeTransition(
+                  opacity: _opacidadeEte,
+                  child: Image.asset(
+                    _logoEte,
+                    width: tamanho,
+                    height: tamanho * 0.85,
+                    fit: BoxFit.contain,
+                    errorBuilder: (_, __, ___) => const _MarcaProvisoria(
+                      icone: Icons.school_rounded,
+                      titulo: 'Jornada ETE',
+                      subtitulo: nomeEscola,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Mostrada só se o arquivo de imagem não estiver em assets/images/.
+class _MarcaProvisoria extends StatelessWidget {
+  final IconData icone;
+  final String titulo;
+  final String? subtitulo;
+  const _MarcaProvisoria({required this.icone, required this.titulo, this.subtitulo});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icone, size: 96, color: Colors.white),
+        const SizedBox(height: 16),
+        Text(
+          titulo,
+          style: const TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.w800),
+        ),
+        if (subtitulo != null) ...[
+          const SizedBox(height: 6),
+          Text(
+            subtitulo!,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white70, fontSize: 15),
+          ),
+        ],
+      ],
     );
   }
 }

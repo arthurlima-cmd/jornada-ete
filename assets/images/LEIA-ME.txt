@@ -1,0 +1,6 @@
+Coloque aqui as imagens do app, com estes nomes exatos:
+
+  Artez.png                               -> 1ª logo da animação inicial
+  ete_cavalcanti_trans_letra_branca_22.png -> 2ª logo (ETE, letras brancas, fundo transparente)
+
+Enquanto os arquivos não existirem, a animação mostra um ícone e o nome no lugar.
