@@ -28,8 +28,20 @@ class ConectarTela extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Icon(Icons.school_rounded, size: 72, color: Colors.white),
-                  const SizedBox(height: 12),
+                  Center(
+                    child: Image.asset(
+                      'assets/images/logotipo_mono_branco.png',
+                      width: 220,
+                      fit: BoxFit.contain,
+                      semanticLabel: nomeEscola,
+                      errorBuilder: (_, __, ___) => const Icon(
+                        Icons.school_rounded,
+                        size: 72,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   const Text(
                     'Jornada ETE',
                     textAlign: TextAlign.center,
@@ -38,11 +50,6 @@ class ConectarTela extends StatelessWidget {
                       fontSize: 30,
                       fontWeight: FontWeight.w800,
                     ),
-                  ),
-                  const Text(
-                    nomeEscola,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white70),
                   ),
                   const SizedBox(height: 32),
                   const Text(

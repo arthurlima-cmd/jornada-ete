@@ -1,12 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../constantes.dart';
-import '../tema.dart';
 import 'portao.dart';
 
-/// Animação inicial, igual à página "animacaoinicio" do FlutterFlow:
+/// Animação inicial, igual à página "animacaoinicio" do FlutterFlow,
+/// com as logos oficiais (logo_Artez e LOGOTIPO ETEADC TRANS) sobre fundo
+/// branco, que é o fundo para o qual as duas logos foram desenhadas:
 ///
 ///   0,0 s – 0,6 s  logo Artez aparece (fade in)
 ///   0,6 s – 2,0 s  logo Artez fica na tela
@@ -28,8 +30,8 @@ class SplashTela extends StatefulWidget {
 
 class _SplashTelaState extends State<SplashTela>
     with SingleTickerProviderStateMixin {
-  static const _artez = 'assets/images/Artez.png';
-  static const _logoEte = 'assets/images/ete_cavalcanti_trans_letra_branca_22.png';
+  static const _artez = 'assets/images/logo_artez.png';
+  static const _logoEte = 'assets/images/logotipo_eteadc_trans.png';
 
   late final AnimationController _ctrl = AnimationController(
     vsync: this,
@@ -91,10 +93,12 @@ class _SplashTelaState extends State<SplashTela>
   @override
   Widget build(BuildContext context) {
     final largura = MediaQuery.sizeOf(context).width;
-    final tamanho = math.min(largura * 0.8, 320.0);
+    final tamanho = math.min(largura * 0.8, 340.0);
 
-    return Scaffold(
-      backgroundColor: Cores.azul,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark, // ícones escuros na barra de status
+      child: Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -109,8 +113,8 @@ class _SplashTelaState extends State<SplashTela>
                   child: Image.asset(
                     _artez,
                     width: tamanho,
-                    height: tamanho,
                     fit: BoxFit.contain,
+                    semanticLabel: 'Artez Comunicação Visual',
                     errorBuilder: (_, __, ___) => const _MarcaProvisoria(
                       icone: Icons.palette_outlined,
                       titulo: 'Artez',
@@ -122,8 +126,8 @@ class _SplashTelaState extends State<SplashTela>
                   child: Image.asset(
                     _logoEte,
                     width: tamanho,
-                    height: tamanho * 0.85,
                     fit: BoxFit.contain,
+                    semanticLabel: 'ETE Antônio Dourado Cavalcanti',
                     errorBuilder: (_, __, ___) => const _MarcaProvisoria(
                       icone: Icons.school_rounded,
                       titulo: 'Jornada ETE',
@@ -135,6 +139,7 @@ class _SplashTelaState extends State<SplashTela>
             ),
           ),
         ),
+      ),
       ),
     );
   }
@@ -152,18 +157,18 @@ class _MarcaProvisoria extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icone, size: 96, color: Colors.white),
+        Icon(icone, size: 96, color: const Color(0xFF091540)),
         const SizedBox(height: 16),
         Text(
           titulo,
-          style: const TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.w800),
+          style: const TextStyle(color: Color(0xFF091540), fontSize: 34, fontWeight: FontWeight.w800),
         ),
         if (subtitulo != null) ...[
           const SizedBox(height: 6),
           Text(
             subtitulo!,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70, fontSize: 15),
+            style: const TextStyle(color: Color(0xFF57636C), fontSize: 15),
           ),
         ],
       ],

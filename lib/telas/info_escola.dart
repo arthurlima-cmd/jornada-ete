@@ -21,20 +21,22 @@ class InfoEscolaTela extends StatelessWidget {
               color: Cores.azul,
               borderRadius: BorderRadius.circular(18),
             ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.apartment, color: Colors.white, size: 36),
-                SizedBox(height: 10),
-                Text(
+            child: Center(
+              child: Image.asset(
+                'assets/images/logotipo_mono_branco.png',
+                width: 240,
+                fit: BoxFit.contain,
+                semanticLabel: nomeEscola,
+                errorBuilder: (_, __, ___) => const Text(
                   nomeEscola,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-              ],
+              ),
             ),
           ),
           const TituloSecao('Sobre a instituição'),

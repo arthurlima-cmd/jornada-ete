@@ -69,3 +69,16 @@ if "android.intent.action.DIAL" not in m:
 with open(manifest, "w", encoding="utf-8") as f:
     f.write(m)
 print("AndroidManifest.xml ajustado")
+
+# --------------------------------------------------------------- ícone do app
+# Copia os ícones gerados por tool/gerar_icones.py (logotipo ETEADC) por cima
+# do ícone padrão do Flutter.
+import shutil
+
+origem_icones = os.path.join(RAIZ, "tool", "icone", "res")
+destino_res = os.path.join(RAIZ, "android", "app", "src", "main", "res")
+if os.path.isdir(origem_icones):
+    shutil.copytree(origem_icones, destino_res, dirs_exist_ok=True)
+    print("Ícone do app substituído pelo logotipo ETEADC")
+else:
+    print("AVISO: tool/icone/res não encontrado; mantendo o ícone padrão")
