@@ -66,7 +66,11 @@ class _AbaHorariosState extends State<AbaHorarios> {
               detalhe: 'Selecione a turma acima para ver o quadro de horários.',
             )
           else
-            GradeDoDia(turma: _turma!, dia: _dia),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: InfoModalidade(turma: _turma!),
+            ),
+          if (_turma != null) GradeDoDia(turma: _turma!, dia: _dia),
         ],
       ),
     );

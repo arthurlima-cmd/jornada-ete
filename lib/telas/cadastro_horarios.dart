@@ -78,6 +78,8 @@ class _CadastroHorariosTelaState extends State<CadastroHorariosTela> {
               detalhe: 'Depois, toque numa aula livre para cadastrar.',
             )
           else ...[
+            InfoModalidade(turma: _turma!),
+            const SizedBox(height: 6),
             const Text(
               'Toque numa aula livre para cadastrar. Use ✏️ e 🗑️ nas suas aulas.',
             ),

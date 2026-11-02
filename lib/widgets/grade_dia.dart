@@ -6,7 +6,8 @@ import '../dados/repositorio.dart';
 import '../tema.dart';
 import 'comuns.dart';
 
-/// Mostra as 9 aulas de uma turma num dia, inclusive as vagas.
+/// Mostra as aulas de uma turma num dia (9 no integrado, 5 no subsequente),
+/// inclusive as vagas.
 /// Usada pelo aluno (somente leitura) e pelo professor (com edição).
 class GradeDoDia extends StatefulWidget {
   final String turma;
@@ -44,14 +45,16 @@ class _GradeDoDiaState extends State<GradeDoDia> {
         if (snap.hasError) return ErroCarregar(erro: snap.error);
         if (!snap.hasData) return const Carregando();
 
+        // 9 aulas no integrado, 5 (noite) no subsequente.
+        final aulas = Repo.aulasDaTurma(widget.turma);
         final porHorario = {for (final h in snap.data!) h.horario: h};
         final avulsas = snap.data!
-            .where((h) => !aulasDoDia.contains(h.horario))
+            .where((h) => !aulas.contains(h.horario))
             .toList(); // registros antigos fora do padrão
 
         return Column(
           children: [
-            for (final horario in aulasDoDia)
+            for (final horario in aulas)
               _CartaoAula(
                 horario: horario,
                 aula: porHorario[horario],
@@ -209,6 +212,31 @@ class _CartaoAula extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+
+/// Linha informativa: "Integrado · 9 aulas por dia" / "Subsequente · 5 aulas por noite".
+class InfoModalidade extends StatelessWidget {
+  final String turma;
+  const InfoModalidade({super.key, required this.turma});
+
+  @override
+  Widget build(BuildContext context) {
+    final mod = Repo.modalidadeDaTurma(turma);
+    final sub = mod == modalidadeSubsequente;
+    final qtd = aulasDaModalidade(mod).length;
+    return Row(
+      children: [
+        Icon(sub ? Icons.nights_stay_outlined : Icons.wb_sunny_outlined,
+            size: 18, color: Cores.textoSecundario),
+        const SizedBox(width: 6),
+        Text(
+          '${nomesModalidade[mod]} · $qtd aulas por ${sub ? 'noite' : 'dia'}',
+          style: const TextStyle(color: Cores.textoSecundario),
+        ),
+      ],
     );
   }
 }

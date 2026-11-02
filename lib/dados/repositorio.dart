@@ -65,24 +65,69 @@ class Repo {
   }
 
   // --------------------------------------------------------------- turmas
+  /// Modalidade de cada turma (atualizado sempre que a lista é lida).
+  static final Map<String, String> _modalidades = {};
+
+  /// "integrado" ou "subsequente" para o nome da turma.
+  static String modalidadeDaTurma(String nome) =>
+      _modalidades[nome] ?? modalidadePeloNome(nome);
+
+  /// As aulas do dia da turma: 9 no integrado, 5 (noite) no subsequente.
+  static List<String> aulasDaTurma(String nome) =>
+      aulasDaModalidade(modalidadeDaTurma(nome));
+
   static Stream<List<Turma>> turmas() => _col('turmas').snapshots().map((s) {
         final lista = s.docs.map(Turma.doDoc).where((t) => t.nome.isNotEmpty).toList();
         lista.sort((a, b) {
           final c = a.ordem.compareTo(b.ordem);
           return c != 0 ? c : a.nome.compareTo(b.nome);
         });
+        for (final t in lista) {
+          _modalidades[t.nome] = t.modalidade;
+        }
         return lista;
       });
 
-  static Future<void> adicionarTurma(String nome, int ordem) =>
-      _col('turmas').doc(slug(nome)).set({'nome': nome, 'ordem': ordem});
+  static Future<void> adicionarTurma(String nome, int ordem, String modalidade) =>
+      _col('turmas').doc(slug(nome)).set({
+        'nome': nome,
+        'ordem': ordem,
+        'modalidade': modalidade,
+      });
 
   static Future<void> excluirTurma(String id) => _col('turmas').doc(id).delete();
 
+  /// Cadastra/atualiza as turmas oficiais (constantes.turmasDaEscola) na ordem
+  /// da lista e remove os nomes antigos renomeados (1º/2º/3º TDG -> STDG).
+  /// Turmas extras cadastradas à mão são mantidas.
+  static Future<int> carregarTurmasDaEscola() async {
+    final batch = _db.batch();
+    var ordem = 1;
+    for (final t in turmasDaEscola) {
+      batch.set(_col('turmas').doc(slug(t.nome)), {
+        'nome': t.nome,
+        'ordem': ordem++,
+        'modalidade': t.modalidade,
+      });
+    }
+    final atuais = await _col('turmas').get();
+    for (final d in atuais.docs) {
+      final nome = Turma.doDoc(d).nome;
+      if (turmasRenomeadas.containsKey(nome)) batch.delete(d.reference);
+    }
+    await batch.commit();
+    return turmasDaEscola.length;
+  }
+
   // ------------------------------------------------------------- horários
+  /// Ordena pela hora ("07:40" < "19:10"), para misturar integrado e
+  /// subsequente na lista do professor sem bagunçar a ordem.
   static List<Horario> _ordenarHorarios(QuerySnapshot<Map<String, dynamic>> s) {
     final lista = s.docs.map(Horario.doDoc).toList();
-    lista.sort((a, b) => a.horario.compareTo(b.horario));
+    lista.sort((a, b) {
+      final c = horaDaAula(a.horario).compareTo(horaDaAula(b.horario));
+      return c != 0 ? c : a.horario.compareTo(b.horario);
+    });
     return lista;
   }
 

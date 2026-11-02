@@ -28,15 +28,15 @@ Também é possível gerar manualmente: aba **Actions → Gerar APK → Run work
 3. **Promover professores.** Todo cadastro nasce como `estudante`. Quem se cadastrou
    como professor aparece com `solicitou_professor = true` na coleção `usuarios`.
    No console, edite o documento e mude o campo `tipo` para `professor`.
-4. **Turmas.** Entre como professor → **Início → Turmas** e cadastre as 12 turmas.
-   Enquanto a lista estiver vazia, o app usa 1º, 2º e 3º TDG.
+4. **Turmas.** Entre como professor → **Início → Turmas → Carregar turmas da escola**.
+   Isso cadastra as 12 turmas do integrado e as 3 do subsequente.
 
 ## Coleções do Firestore
 
 | Coleção | Campos principais |
 |---|---|
 | `usuarios` (ID = uid) | `display_name`, `email`, `tipo`, `turma`, `matricula`, `solicitou_professor` |
-| `turmas` | `nome`, `ordem` |
+| `turmas` | `nome`, `ordem`, `modalidade` (integrado = 9 aulas por dia; subsequente = 5 aulas por noite) |
 | `horarios` (ID = turma_dia_aula) | `aulas` (disciplina), `conteudo`, `horario` ("1ª aula · 07:40"), `dia_semana`, `turma`, `professor`, `professor_nome` |
 | `provas` | `disciplina`, `tipo`, `turma`, `data`, `conteudo`, `professor`, `professor_nome` |
 | `avisos` | `titulo`, `mensagem`, `tipo`, `turma`, `data`, `autor`, `autor_nome`, `criado_em` |

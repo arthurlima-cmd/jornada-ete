@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../constantes.dart';
+
 String _txt(dynamic v) => v is String ? v : (v == null ? '' : v.toString());
 DateTime? _data(dynamic v) => v is Timestamp ? v.toDate() : null;
 DocumentReference? _ref(dynamic v) => v is DocumentReference ? v : null;
@@ -205,16 +207,25 @@ class Turma {
   final String id;
   final String nome;
   final int ordem;
+  final String modalidade; // "integrado" ou "subsequente"
 
-  const Turma({required this.id, required this.nome, required this.ordem});
+  const Turma({
+    required this.id,
+    required this.nome,
+    required this.ordem,
+    required this.modalidade,
+  });
 
   factory Turma.doDoc(DocumentSnapshot<Map<String, dynamic>> d) {
     final m = d.data() ?? const <String, dynamic>{};
     final o = m['ordem'];
+    final nome = _txt(m['nome']);
+    final mod = _txt(m['modalidade']);
     return Turma(
       id: d.id,
-      nome: _txt(m['nome']),
+      nome: nome,
       ordem: o is num ? o.toInt() : 0,
+      modalidade: mod.isEmpty ? modalidadePeloNome(nome) : mod,
     );
   }
 }

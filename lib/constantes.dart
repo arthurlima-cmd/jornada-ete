@@ -13,9 +13,21 @@ const Map<String, String> diasExtenso = {
   'Sex': 'Sexta-feira',
 };
 
-/// As 9 aulas do dia, no formato gravado no campo `horario`.
+// ---------------------------------------------------------------------------
+// Modalidades e aulas
+// ---------------------------------------------------------------------------
+
+const String modalidadeIntegrado = 'integrado';
+const String modalidadeSubsequente = 'subsequente';
+
+const Map<String, String> nomesModalidade = {
+  modalidadeIntegrado: 'Integrado',
+  modalidadeSubsequente: 'Subsequente',
+};
+
+/// Integrado: 9 aulas por dia, de segunda a sexta (formato do campo `horario`).
 /// Começam com o número da aula, então a ordem alfabética já é a ordem certa.
-const List<String> aulasDoDia = [
+const List<String> aulasIntegrado = [
   '1ª aula · 07:40',
   '2ª aula · 08:30',
   '3ª aula · 09:40',
@@ -27,8 +39,66 @@ const List<String> aulasDoDia = [
   '9ª aula · 15:50',
 ];
 
-/// Usadas apenas enquanto a coleção `turmas` estiver vazia.
-const List<String> turmasPadrao = ['1º TDG', '2º TDG', '3º TDG'];
+/// Subsequente: 5 aulas por noite, de segunda a sexta.
+/// ATENÇÃO: horários provisórios — troque pelos horários oficiais da escola.
+const List<String> aulasSubsequente = [
+  '1ª aula · 18:30',
+  '2ª aula · 19:10',
+  '3ª aula · 19:50',
+  '4ª aula · 20:45',
+  '5ª aula · 21:25',
+];
+
+List<String> aulasDaModalidade(String modalidade) =>
+    modalidade == modalidadeSubsequente ? aulasSubsequente : aulasIntegrado;
+
+class TurmaPadrao {
+  final String nome;
+  final String modalidade;
+  const TurmaPadrao(this.nome, this.modalidade);
+}
+
+/// Turmas oficiais da escola. Usadas enquanto a coleção `turmas` estiver
+/// vazia e pelo botão "Carregar turmas da escola" (tela Turmas).
+const List<TurmaPadrao> turmasDaEscola = [
+  // Integrado — 9 aulas por dia
+  TurmaPadrao('1º TDG A', modalidadeIntegrado),
+  TurmaPadrao('1º TDG B', modalidadeIntegrado),
+  TurmaPadrao('1º TDG C', modalidadeIntegrado),
+  TurmaPadrao('2º TDG A', modalidadeIntegrado),
+  TurmaPadrao('2º TDG B', modalidadeIntegrado),
+  TurmaPadrao('3º TDG A', modalidadeIntegrado),
+  TurmaPadrao('3º TDG B', modalidadeIntegrado),
+  TurmaPadrao('1º TND A', modalidadeIntegrado),
+  TurmaPadrao('1º TND B', modalidadeIntegrado),
+  TurmaPadrao('2º TNDG', modalidadeIntegrado),
+  TurmaPadrao('3º TND A', modalidadeIntegrado),
+  TurmaPadrao('3º TND B', modalidadeIntegrado),
+  // Subsequente — 5 aulas por noite
+  TurmaPadrao('1º STDG', modalidadeSubsequente),
+  TurmaPadrao('2º STDG', modalidadeSubsequente),
+  TurmaPadrao('3º STDG', modalidadeSubsequente),
+];
+
+List<String> get turmasPadrao => [for (final t in turmasDaEscola) t.nome];
+
+/// Nomes antigos que foram renomeados (antigo -> novo).
+const Map<String, String> turmasRenomeadas = {
+  '1º TDG': '1º STDG',
+  '2º TDG': '2º STDG',
+  '3º TDG': '3º STDG',
+};
+
+/// Modalidade deduzida do nome, para turmas sem o campo `modalidade`:
+/// nomes como "1º STDG" (com "S" logo após o ano) são do subsequente.
+String modalidadePeloNome(String nomeTurma) {
+  for (final t in turmasDaEscola) {
+    if (t.nome == nomeTurma) return t.modalidade;
+  }
+  return RegExp(r'^\d+\s*[ºª°]?\s*S', caseSensitive: false).hasMatch(nomeTurma.trim())
+      ? modalidadeSubsequente
+      : modalidadeIntegrado;
+}
 
 const String todasAsTurmas = 'Todas as turmas';
 
@@ -60,6 +130,12 @@ bool hojeEhDiaLetivo() => DateTime.now().weekday <= 5;
 
 /// Remove acentos, espaços e símbolos para montar IDs de documento.
 String slug(String texto) => texto.replaceAll(RegExp(r'[^A-Za-z0-9]'), '');
+
+/// Hora "07:40" a partir do texto "1ª aula · 07:40" (para ordenar por hora).
+String horaDaAula(String horario) {
+  final partes = horario.split('·');
+  return partes.length > 1 ? partes[1].trim() : horario;
+}
 
 /// Número da aula (1..9) a partir do texto "1ª aula · 07:40".
 String numeroDaAula(String horario) =>

@@ -6,8 +6,9 @@ import '../dados/repositorio.dart';
 import '../tema.dart';
 import '../widgets/comuns.dart';
 
-/// Cadastro das turmas. Todos os seletores de turma do app leem esta lista,
-/// então basta cadastrar as 12 turmas uma única vez.
+/// Cadastro das turmas. Todos os seletores de turma do app leem esta lista.
+/// O botão "Carregar turmas da escola" cadastra de uma vez as turmas oficiais
+/// (integrado e subsequente) e remove os nomes antigos 1º/2º/3º TDG.
 class TurmasTela extends StatefulWidget {
   const TurmasTela({super.key});
   @override
@@ -17,12 +18,32 @@ class TurmasTela extends StatefulWidget {
 class _TurmasTelaState extends State<TurmasTela> {
   late final Stream<List<Turma>> _turmas = Repo.turmas();
   final _nome = TextEditingController();
+  String _modalidade = modalidadeIntegrado;
   bool _salvando = false;
 
   @override
   void dispose() {
     _nome.dispose();
     super.dispose();
+  }
+
+  Future<void> _carregarPadrao() async {
+    final ok = await confirmar(context,
+        titulo: 'Carregar turmas da escola',
+        mensagem: 'Cadastrar as ${turmasDaEscola.length} turmas oficiais '
+            '(integrado e subsequente) e remover os nomes antigos '
+            '1º, 2º e 3º TDG? Turmas extras que você criou continuam na lista.',
+        textoConfirmar: 'Carregar');
+    if (!ok) return;
+    setState(() => _salvando = true);
+    try {
+      final n = await Repo.carregarTurmasDaEscola();
+      if (mounted) mostrarAviso(context, '$n turmas cadastradas.');
+    } catch (e) {
+      if (mounted) mostrarAviso(context, mensagemDeErro(e), erro: true);
+    } finally {
+      if (mounted) setState(() => _salvando = false);
+    }
   }
 
   Future<void> _adicionar(List<Turma> atuais) async {
@@ -40,7 +61,7 @@ class _TurmasTelaState extends State<TurmasTela> {
       final ordem = atuais.isEmpty
           ? 1
           : atuais.map((t) => t.ordem).reduce((a, b) => a > b ? a : b) + 1;
-      await Repo.adicionarTurma(nome, ordem);
+      await Repo.adicionarTurma(nome, ordem, _modalidade);
       _nome.clear();
       if (mounted) mostrarAviso(context, 'Turma $nome adicionada.');
     } catch (e) {
@@ -64,6 +85,35 @@ class _TurmasTelaState extends State<TurmasTela> {
     }
   }
 
+  Widget _cartao(Turma t) {
+    final sub = t.modalidade == modalidadeSubsequente;
+    return Card(
+      elevation: 0,
+      color: Colors.white,
+      margin: const EdgeInsets.only(bottom: 8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(color: Cores.borda),
+      ),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Cores.azulClaro,
+          child: Icon(
+            sub ? Icons.nights_stay_outlined : Icons.wb_sunny_outlined,
+            color: Cores.azul,
+          ),
+        ),
+        title: Text(t.nome, style: const TextStyle(fontWeight: FontWeight.w600)),
+        subtitle: Text(sub ? '5 aulas por noite' : '9 aulas por dia'),
+        trailing: IconButton(
+          tooltip: 'Excluir turma',
+          icon: const Icon(Icons.delete_outline, color: Cores.vermelho),
+          onPressed: () => _excluir(t),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +124,40 @@ class _TurmasTelaState extends State<TurmasTela> {
           if (snap.hasError) return ErroCarregar(erro: snap.error);
           if (!snap.hasData) return const Carregando();
           final turmas = snap.data!;
+          final integrado =
+              turmas.where((t) => t.modalidade != modalidadeSubsequente).toList();
+          final subsequente =
+              turmas.where((t) => t.modalidade == modalidadeSubsequente).toList();
+
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
+              FilledButton.icon(
+                onPressed: _salvando ? null : _carregarPadrao,
+                icon: const Icon(Icons.playlist_add),
+                label: const Text('Carregar turmas da escola'),
+              ),
+              const SizedBox(height: 20),
+              const Text('Adicionar outra turma',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 8),
+              SegmentedButton<String>(
+                segments: const [
+                  ButtonSegment(
+                    value: modalidadeIntegrado,
+                    label: Text('Integrado'),
+                    icon: Icon(Icons.wb_sunny_outlined),
+                  ),
+                  ButtonSegment(
+                    value: modalidadeSubsequente,
+                    label: Text('Subsequente'),
+                    icon: Icon(Icons.nights_stay_outlined),
+                  ),
+                ],
+                selected: {_modalidade},
+                onSelectionChanged: (s) => setState(() => _modalidade = s.first),
+              ),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
@@ -84,7 +165,7 @@ class _TurmasTelaState extends State<TurmasTela> {
                       controller: _nome,
                       textCapitalization: TextCapitalization.characters,
                       decoration: const InputDecoration(
-                        labelText: 'Nova turma',
+                        labelText: 'Nome da turma',
                         hintText: 'Ex.: 1º TDG A',
                       ),
                       onSubmitted: (_) => _adicionar(turmas),
@@ -101,37 +182,21 @@ class _TurmasTelaState extends State<TurmasTela> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
               if (turmas.isEmpty)
-                EstadoVazio(
+                const EstadoVazio(
                   icone: Icons.groups_outlined,
                   mensagem: 'Nenhuma turma cadastrada.',
-                  detalhe:
-                      'Enquanto a lista estiver vazia, o app usa: ${turmasPadrao.join(', ')}.',
+                  detalhe: 'Toque em "Carregar turmas da escola". Enquanto a '
+                      'lista estiver vazia, o app usa as turmas oficiais.',
                 ),
-              for (final t in turmas)
-                Card(
-                  elevation: 0,
-                  color: Colors.white,
-                  margin: const EdgeInsets.only(bottom: 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: const BorderSide(color: Cores.borda),
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Cores.azulClaro,
-                      child: Text('${t.ordem}',
-                          style: const TextStyle(color: Cores.azul, fontWeight: FontWeight.w700)),
-                    ),
-                    title: Text(t.nome),
-                    trailing: IconButton(
-                      tooltip: 'Excluir turma',
-                      icon: const Icon(Icons.delete_outline, color: Cores.vermelho),
-                      onPressed: () => _excluir(t),
-                    ),
-                  ),
-                ),
+              if (integrado.isNotEmpty) ...[
+                TituloSecao('Integrado · ${integrado.length} turmas'),
+                for (final t in integrado) _cartao(t),
+              ],
+              if (subsequente.isNotEmpty) ...[
+                TituloSecao('Subsequente · ${subsequente.length} turmas'),
+                for (final t in subsequente) _cartao(t),
+              ],
             ],
           );
         },
