@@ -71,7 +71,7 @@ const List<TurmaPadrao> turmasDaEscola = [
   TurmaPadrao('3º TDG B', modalidadeIntegrado),
   TurmaPadrao('1º TND A', modalidadeIntegrado),
   TurmaPadrao('1º TND B', modalidadeIntegrado),
-  TurmaPadrao('2º TNDG', modalidadeIntegrado),
+  TurmaPadrao('2º TND', modalidadeIntegrado),
   TurmaPadrao('3º TND A', modalidadeIntegrado),
   TurmaPadrao('3º TND B', modalidadeIntegrado),
   // Subsequente — 5 aulas por noite

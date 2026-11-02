@@ -47,9 +47,20 @@ class _GradeDoDiaState extends State<GradeDoDia> {
 
         // 9 aulas no integrado, 5 (noite) no subsequente.
         final aulas = Repo.aulasDaTurma(widget.turma);
-        final porHorario = {for (final h in snap.data!) h.horario: h};
+        // Casa cada aula salva com a posição pelo NÚMERO da aula ("3ª aula"),
+        // não pelo texto inteiro: assim, se o horário de uma aula mudar
+        // (ex.: horários oficiais da noite), o que já foi cadastrado continua
+        // aparecendo no lugar certo.
+        final padrao = RegExp(r'^\d+ª aula');
+        final numeros = {for (final a in aulas) numeroDaAula(a)};
+        final porNumero = <String, Horario>{
+          for (final h in snap.data!)
+            if (padrao.hasMatch(h.horario)) numeroDaAula(h.horario): h,
+        };
         final avulsas = snap.data!
-            .where((h) => !aulas.contains(h.horario))
+            .where((h) =>
+                !padrao.hasMatch(h.horario) ||
+                !numeros.contains(numeroDaAula(h.horario)))
             .toList(); // registros antigos fora do padrão
 
         return Column(
@@ -57,7 +68,7 @@ class _GradeDoDiaState extends State<GradeDoDia> {
             for (final horario in aulas)
               _CartaoAula(
                 horario: horario,
-                aula: porHorario[horario],
+                aula: porNumero[numeroDaAula(horario)],
                 professor: widget.professor,
                 onEditar: widget.onEditar,
                 onExcluir: widget.onExcluir,

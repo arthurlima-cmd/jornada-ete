@@ -50,7 +50,8 @@ class Usuario {
       nome: _txt(m['display_name']),
       email: _txt(m['email']),
       tipo: _txt(m['tipo']).isEmpty ? 'estudante' : _txt(m['tipo']),
-      turma: _txt(m['turma']),
+      // Perfis antigos com "1º TDG" passam a ser "1º STDG" etc.
+      turma: turmasRenomeadas[_txt(m['turma'])] ?? _txt(m['turma']),
       matricula: _txt(m['matricula']),
       solicitouProfessor: m['solicitou_professor'] == true,
     );

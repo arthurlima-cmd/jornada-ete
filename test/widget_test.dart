@@ -14,7 +14,7 @@ void main() {
 
   test('modalidade deduzida pelo nome', () {
     expect(modalidadePeloNome('1º TDG A'), modalidadeIntegrado);
-    expect(modalidadePeloNome('2º TNDG'), modalidadeIntegrado);
+    expect(modalidadePeloNome('2º TND'), modalidadeIntegrado);
     expect(modalidadePeloNome('3º STDG'), modalidadeSubsequente);
   });
 
