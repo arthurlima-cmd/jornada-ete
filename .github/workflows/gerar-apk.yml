@@ -1,0 +1,68 @@
+name: Gerar APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Instalar Flutter (stable)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Criar a pasta android/
+        run: flutter create --platforms=android --org com.mycompany --project-name jornada_ete .
+
+      - name: Configurar Firebase
+        id: firebase
+        run: python3 tool/gerar_firebase_options.py com.mycompany.appete
+
+      - name: Ajustar Android (pacote, minSdk, permissões)
+        run: python3 tool/ajustar_android.py "${{ steps.firebase.outputs.package }}"
+
+      - name: Baixar dependências
+        run: flutter pub get
+
+      - name: Verificar o código
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Compilar APK
+        run: flutter build apk --release
+
+      - name: Renomear APK
+        run: cp build/app/outputs/flutter-apk/app-release.apk jornada-ete.apk
+
+      - name: Guardar APK (artefato)
+        uses: actions/upload-artifact@v4
+        with:
+          name: jornada-ete-apk
+          path: jornada-ete.apk
+
+      - name: Publicar na página de Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Jornada ETE 1.0.${{ github.run_number }}
+          body: |
+            APK de teste do Jornada ETE.
+            Baixe o arquivo jornada-ete.apk no celular Android e instale
+            (permita "instalar apps de fontes desconhecidas").
+          files: jornada-ete.apk

@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+"""Ajusta a pasta android/ criada pelo `flutter create`:
+- applicationId igual ao pacote registrado no Firebase
+- minSdk 23 (exigido pelo Firebase Auth)
+- nome do app e permissão de internet no AndroidManifest
+
+Uso: python3 tool/ajustar_android.py <pacote>
+"""
+import os
+import re
+import sys
+
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+pacote = sys.argv[1]
+
+# ---------------------------------------------------------------- build.gradle
+gradle = None
+for nome in ("build.gradle.kts", "build.gradle"):
+    caminho = os.path.join(RAIZ, "android", "app", nome)
+    if os.path.exists(caminho):
+        gradle = caminho
+        break
+if gradle is None:
+    sys.exit("ERRO: android/app/build.gradle(.kts) não encontrado")
+
+with open(gradle, encoding="utf-8") as f:
+    texto = f.read()
+
+kts = gradle.endswith(".kts")
+if kts:
+    texto, n1 = re.subn(r'applicationId\s*=\s*"[^"]*"', f'applicationId = "{pacote}"', texto)
+    texto, n2 = re.subn(r'minSdk\s*=\s*[^\n]+', "minSdk = 23", texto)
+else:
+    texto, n1 = re.subn(r'applicationId\s+"[^"]*"', f'applicationId "{pacote}"', texto)
+    texto, n2 = re.subn(r'minSdk(Version)?\s+[^\n]+', "minSdkVersion 23", texto)
+
+if n1 == 0:
+    sys.exit("ERRO: applicationId não encontrado no build.gradle")
+if n2 == 0:
+    print("AVISO: minSdk não encontrado; mantendo o padrão do Flutter")
+
+with open(gradle, "w", encoding="utf-8") as f:
+    f.write(texto)
+print(f"{os.path.basename(gradle)}: applicationId={pacote}, minSdk=23")
+
+# ------------------------------------------------------------ AndroidManifest
+manifest = os.path.join(RAIZ, "android", "app", "src", "main", "AndroidManifest.xml")
+with open(manifest, encoding="utf-8") as f:
+    m = f.read()
+
+m = re.sub(r'android:label="[^"]*"', 'android:label="Jornada ETE"', m, count=1)
+if "android.permission.INTERNET" not in m:
+    m = m.replace(
+        "<application",
+        '<uses-permission android:name="android.permission.INTERNET"/>\n    <application',
+        1,
+    )
+# Permite abrir telefone, e-mail e navegador (url_launcher) no Android 11+.
+intents = """
+        <intent><action android:name="android.intent.action.VIEW"/><data android:scheme="https"/></intent>
+        <intent><action android:name="android.intent.action.DIAL"/><data android:scheme="tel"/></intent>
+        <intent><action android:name="android.intent.action.SENDTO"/><data android:scheme="mailto"/></intent>"""
+if "android.intent.action.DIAL" not in m:
+    if "<queries>" in m:
+        m = m.replace("<queries>", "<queries>" + intents, 1)
+    else:
+        m = m.replace("</manifest>", "    <queries>" + intents + "\n    </queries>\n</manifest>", 1)
+
+with open(manifest, "w", encoding="utf-8") as f:
+    f.write(m)
+print("AndroidManifest.xml ajustado")

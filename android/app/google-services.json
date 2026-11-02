@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "454336397469",
+    "firebase_url": "https://compettec-ui6cbh-default-rtdb.firebaseio.com",
+    "project_id": "compettec-ui6cbh",
+    "storage_bucket": "compettec-ui6cbh.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454336397469:android:6dae9682c39135ebd19474",
+        "android_client_info": {
+          "package_name": "com.mycompany.appete"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLZZ8WpKfYVX4vZNxGud6YnbPpKJgjLMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454336397469:android:188210be5993a9dbd19474",
+        "android_client_info": {
+          "package_name": "com.mycompany.compettec"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLZZ8WpKfYVX4vZNxGud6YnbPpKJgjLMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

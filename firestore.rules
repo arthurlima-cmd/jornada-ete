@@ -1,0 +1,66 @@
+rules_version = '2';
+
+// Regras do Jornada ETE.
+// Cole no console do Firebase: Firestore Database -> Regras -> Publicar.
+//
+// Principais mudanças em relação às regras do protótipo:
+//  - nada é público: é preciso estar logado para ler
+//  - só professores (tipo == "professor") criam horários, provas, avisos e cardápio
+//  - cada professor só edita/exclui o que ele mesmo cadastrou
+//  - ninguém se promove a professor pelo app (a gestão altera o campo "tipo")
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function logado() {
+      return request.auth != null;
+    }
+    function meuDoc() {
+      return /databases/$(database)/documents/usuarios/$(request.auth.uid);
+    }
+    function ehProfessor() {
+      return logado() && exists(meuDoc()) && get(meuDoc()).data.tipo == 'professor';
+    }
+
+    match /usuarios/{uid} {
+      allow read: if logado();
+      allow create: if logado() && request.auth.uid == uid
+                    && request.resource.data.tipo == 'estudante';
+      allow update: if logado() && request.auth.uid == uid
+                    && request.resource.data.tipo == resource.data.tipo;
+      allow delete: if false;
+    }
+
+    // Lista de turmas: leitura liberada (usada na tela de cadastro, antes do login).
+    match /turmas/{id} {
+      allow read: if true;
+      allow write: if ehProfessor();
+    }
+
+    match /horarios/{id} {
+      allow read: if logado();
+      allow create: if ehProfessor() && request.resource.data.professor == meuDoc();
+      allow update: if ehProfessor() && resource.data.professor == meuDoc()
+                    && request.resource.data.professor == meuDoc();
+      allow delete: if ehProfessor() && resource.data.professor == meuDoc();
+    }
+
+    match /provas/{id} {
+      allow read: if logado();
+      allow create: if ehProfessor() && request.resource.data.professor == meuDoc();
+      allow update: if ehProfessor() && resource.data.professor == meuDoc()
+                    && request.resource.data.professor == meuDoc();
+      allow delete: if ehProfessor() && resource.data.professor == meuDoc();
+    }
+
+    match /avisos/{id} {
+      allow read: if logado();
+      allow create: if ehProfessor() && request.resource.data.autor == meuDoc();
+      allow update, delete: if ehProfessor() && resource.data.autor == meuDoc();
+    }
+
+    match /cardapio/{id} {
+      allow read: if logado();
+      allow write: if ehProfessor();
+    }
+  }
+}
