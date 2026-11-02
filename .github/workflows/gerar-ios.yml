@@ -1,0 +1,51 @@
+name: Compilar iOS
+
+# Roda manualmente: aba Actions -> "Compilar iOS" -> Run workflow.
+# Gera o app iOS SEM assinatura: serve para confirmar que o projeto compila.
+# Para instalar em iPhones, é preciso assinar com uma conta Apple Developer
+# (TestFlight ou Ad Hoc) — esse passo será adicionado quando a conta existir.
+on:
+  workflow_dispatch:
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    timeout-minutes: 75
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Instalar Flutter (stable)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Criar a pasta ios/
+        run: flutter create --platforms=ios --org com.mycompany --project-name jornada_ete .
+
+      - name: Configurar Firebase
+        run: python3 tool/gerar_firebase_options.py com.mycompany.appete
+
+      - name: Ajustar iOS (bundle, iOS 15, nome, ícone)
+        run: python3 tool/ajustar_ios.py com.mycompany.appete
+
+      - name: Baixar dependências
+        run: flutter pub get
+
+      - name: Verificar o código
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Compilar para iPhone (sem assinatura)
+        run: flutter build ios --release --no-codesign
+
+      - name: Empacotar
+        run: |
+          cd build/ios/iphoneos
+          zip -qry "$GITHUB_WORKSPACE/Jornada_ete_v1.0.4-ios-sem-assinatura.zip" Runner.app
+
+      - name: Guardar o app iOS (artefato)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jornada_ete_v1.0.4-ios-sem-assinatura
+          path: Jornada_ete_v1.0.4-ios-sem-assinatura.zip

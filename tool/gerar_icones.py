@@ -82,3 +82,32 @@ with open(os.path.join(SAIDA, "values", "ic_launcher_background.xml"), "w", enco
 
 pass
 print("Ícones gerados em", SAIDA)
+
+# ------------------------------------------------------------------- iOS
+# AppIcon.appiconset completo (sem transparência, como a Apple exige),
+# copiado para ios/Runner/Assets.xcassets pelo tool/ajustar_ios.py.
+import json
+
+IOS = os.path.join(RAIZ, "tool", "icone", "ios", "AppIcon.appiconset")
+os.makedirs(IOS, exist_ok=True)
+ICONES_IOS = [  # (idioma, tamanho em pt, escala)
+    ("iphone", 20, 2), ("iphone", 20, 3), ("iphone", 29, 1), ("iphone", 29, 2),
+    ("iphone", 29, 3), ("iphone", 40, 2), ("iphone", 40, 3), ("iphone", 60, 2),
+    ("iphone", 60, 3), ("ipad", 20, 1), ("ipad", 20, 2), ("ipad", 29, 1),
+    ("ipad", 29, 2), ("ipad", 40, 1), ("ipad", 40, 2), ("ipad", 76, 1),
+    ("ipad", 76, 2), ("ipad", 83.5, 2), ("ios-marketing", 1024, 1),
+]
+imagens = []
+for idioma, pt, esc in ICONES_IOS:
+    px = round(pt * esc)
+    nome_pt = f"{pt:g}"
+    arquivo = f"Icon-App-{nome_pt}x{nome_pt}@{esc}x.png"
+    caminho = os.path.join(IOS, arquivo)
+    if not os.path.exists(caminho):
+        centralizar(px, 0.82, (255, 255, 255, 255)).convert("RGB").save(caminho, optimize=True)
+    imagens.append({"size": f"{nome_pt}x{nome_pt}", "idiom": idioma,
+                    "filename": arquivo, "scale": f"{esc}x"})
+with open(os.path.join(IOS, "Contents.json"), "w", encoding="utf-8") as f:
+    json.dump({"images": imagens, "info": {"version": 1, "author": "xcode"}}, f, indent=2)
+print("Ícones iOS gerados em", IOS)
+

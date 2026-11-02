@@ -19,3 +19,10 @@ android/*
 !android/app/
 android/app/*
 !android/app/google-services.json
+
+# Pasta ios/ é gerada no GitHub Actions (flutter create);
+# só o arquivo do Firebase para iOS fica versionado (quando existir).
+ios/*
+!ios/Runner/
+ios/Runner/*
+!ios/Runner/GoogleService-Info.plist
