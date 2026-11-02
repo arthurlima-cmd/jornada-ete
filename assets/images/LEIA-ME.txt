@@ -2,7 +2,8 @@ Imagens usadas pelo app:
 
   logo_artez.png              -> 1ª logo da animação inicial (logo_Artez)
   logotipo_eteadc_trans.png   -> 2ª logo da animação inicial (LOGOTIPO ETEADC TRANS)
-  logotipo_mono_branco.png    -> logo nas telas de fundo azul (LOGOTIPO MONO1, em branco)
+  logotipo_eteadc.png         -> logo colorido na tela Minha ETE (LOGOTIPO ETEADC)
+  logotipo_mono_branco.png    -> logo na tela de escolha de perfil (LOGOTIPO MONO1, em branco)
   logotipo_mono.png           -> LOGOTIPO MONO1 original (preto), para fundos claros
 
 O ícone do app fica em tool/icone/ (gerado por tool/gerar_icones.py).

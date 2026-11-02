@@ -105,13 +105,17 @@ class _SplashTelaState extends State<SplashTela>
           onTap: _seguir, // toque pula a animação (uma única vez)
           child: Semantics(
             label: 'Jornada ETE, $nomeEscola. Toque para continuar.',
-            child: Stack(
+            // SizedBox.expand: a pilha ocupa a tela inteira, então as duas
+            // logos ficam centralizadas na horizontal e na vertical.
+            child: SizedBox.expand(
+              child: Stack(
               alignment: Alignment.center,
               children: [
                 FadeTransition(
                   opacity: _opacidadeArtez,
                   child: Image.asset(
                     _artez,
+                    alignment: Alignment.center,
                     width: tamanho,
                     fit: BoxFit.contain,
                     semanticLabel: 'Artez Comunicação Visual',
@@ -125,6 +129,7 @@ class _SplashTelaState extends State<SplashTela>
                   opacity: _opacidadeEte,
                   child: Image.asset(
                     _logoEte,
+                    alignment: Alignment.center,
                     width: tamanho,
                     fit: BoxFit.contain,
                     semanticLabel: 'ETE Antônio Dourado Cavalcanti',
@@ -136,6 +141,7 @@ class _SplashTelaState extends State<SplashTela>
                   ),
                 ),
               ],
+            ),
             ),
           ),
         ),

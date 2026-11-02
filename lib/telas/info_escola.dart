@@ -18,20 +18,21 @@ class InfoEscolaTela extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Cores.azul,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: Cores.borda),
             ),
             child: Center(
               child: Image.asset(
-                'assets/images/logotipo_mono_branco.png',
-                width: 240,
+                'assets/images/logotipo_eteadc.png',
+                width: 260,
                 fit: BoxFit.contain,
                 semanticLabel: nomeEscola,
                 errorBuilder: (_, __, ___) => const Text(
                   nomeEscola,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Cores.azul,
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
                   ),
