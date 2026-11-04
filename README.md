@@ -64,9 +64,9 @@ tool/                     scripts usados pelo GitHub Actions
 Com o Flutter instalado:
 
 ```bash
-flutter create --platforms=android --org com.mycompany --project-name jornada_ete .
-python3 tool/gerar_firebase_options.py com.mycompany.appete
-python3 tool/ajustar_android.py com.mycompany.appete
+flutter create --platforms=android --org br.edu.eteadc --project-name jornada_ete .
+python3 tool/gerar_firebase_options.py br.edu.eteadc.jornadaete
+python3 tool/ajustar_android.py br.edu.eteadc.jornadaete
 flutter run            # ou: flutter build apk --release
 ```
 

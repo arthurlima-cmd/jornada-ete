@@ -29,11 +29,11 @@ jobs:
           cache: true
 
       - name: Criar a pasta android/
-        run: flutter create --platforms=android --org com.mycompany --project-name jornada_ete .
+        run: flutter create --platforms=android --org br.edu.eteadc --project-name jornada_ete .
 
       - name: Configurar Firebase
         id: firebase
-        run: python3 tool/gerar_firebase_options.py com.mycompany.appete
+        run: python3 tool/gerar_firebase_options.py br.edu.eteadc.jornadaete
 
       - name: Ajustar Android (pacote, minSdk, permissões)
         run: python3 tool/ajustar_android.py "${{ steps.firebase.outputs.package }}"

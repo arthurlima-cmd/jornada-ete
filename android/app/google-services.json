@@ -8,6 +8,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:454336397469:android:f3a48f6fdce95960d19474",
+        "android_client_info": {
+          "package_name": "br.edu.eteadc.jornadaete"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLZZ8WpKfYVX4vZNxGud6YnbPpKJgjLMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:454336397469:android:6dae9682c39135ebd19474",
         "android_client_info": {
           "package_name": "com.mycompany.appete"

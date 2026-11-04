@@ -22,13 +22,13 @@ jobs:
           cache: true
 
       - name: Criar a pasta ios/
-        run: flutter create --platforms=ios --org com.mycompany --project-name jornada_ete .
+        run: flutter create --platforms=ios --org br.edu.eteadc --project-name jornada_ete .
 
       - name: Configurar Firebase
-        run: python3 tool/gerar_firebase_options.py com.mycompany.appete
+        run: python3 tool/gerar_firebase_options.py br.edu.eteadc.jornadaete
 
       - name: Ajustar iOS (bundle, iOS 15, nome, ícone)
-        run: python3 tool/ajustar_ios.py com.mycompany.appete
+        run: python3 tool/ajustar_ios.py br.edu.eteadc.jornadaete
 
       - name: Baixar dependências
         run: flutter pub get
