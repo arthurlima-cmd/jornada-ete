@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../constantes.dart';
 import '../dados/modelos.dart';
 import '../servicos/notificacoes.dart';
 import '../tema.dart';
@@ -9,6 +10,7 @@ import 'cadastro_horarios.dart';
 import 'cadastro_provas.dart';
 import 'contatos.dart';
 import 'editar_perfil.dart';
+import 'excluir_conta.dart';
 import 'info_escola.dart';
 import 'publicar_aviso.dart';
 import 'turmas.dart';
@@ -141,6 +143,21 @@ class AbaPerfil extends StatelessWidget {
             onPressed: () => _sair(context),
             icon: const Icon(Icons.logout),
             label: const Text('Sair da conta'),
+          ),
+          const SizedBox(height: 4),
+          Center(
+            child: TextButton(
+              style: TextButton.styleFrom(foregroundColor: Cores.textoSecundario),
+              onPressed: () => abrir(ExcluirContaTela(usuario: u)),
+              child: const Text('Excluir minha conta'),
+            ),
+          ),
+          Center(
+            child: TextButton(
+              style: TextButton.styleFrom(foregroundColor: Cores.textoSecundario),
+              onPressed: () => abrirLink(context, urlPrivacidade),
+              child: const Text('Política de privacidade'),
+            ),
           ),
         ],
       ),

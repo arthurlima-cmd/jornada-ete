@@ -64,6 +64,10 @@ class Repo {
     return _col('usuarios').doc(uid).update(dados);
   }
 
+  /// Apaga o perfil do usuário (a conta de login é apagada em seguida).
+  static Future<void> excluirPerfil(String uid) =>
+      _col('usuarios').doc(uid).delete();
+
   // --------------------------------------------------------------- turmas
   /// Modalidade de cada turma (atualizado sempre que a lista é lida).
   static final Map<String, String> _modalidades = {};

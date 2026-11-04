@@ -39,9 +39,54 @@ if n1 == 0:
 if n2 == 0:
     print("AVISO: minSdk não encontrado; mantendo o padrão do Flutter")
 
+# Android 16 (API 36): exigência do Google Play desde 31/08/2026.
+if kts:
+    texto = re.sub(r"compileSdk\s*=\s*flutter\.compileSdkVersion",
+                   "compileSdk = maxOf(flutter.compileSdkVersion, 36)", texto)
+    texto = re.sub(r"targetSdk\s*=\s*flutter\.targetSdkVersion",
+                   "targetSdk = maxOf(flutter.targetSdkVersion, 36)", texto)
+
+# Assinatura de publicação: usa android/key.properties quando existir
+# (criado pelo workflow "Gerar AAB" a partir dos segredos do GitHub);
+# sem ele, continua assinando com a chave de depuração.
+if kts and "key.properties" not in texto:
+    texto = "import java.io.FileInputStream\nimport java.util.Properties\n\n" + texto
+    texto = texto.replace(
+        "\nandroid {",
+        '''
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
+android {''', 1)
+    texto = texto.replace(
+        "    buildTypes {",
+        '''    signingConfigs {
+        create("release") {
+            if (keystorePropertiesFile.exists()) {
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+            }
+        }
+    }
+
+    buildTypes {''', 1)
+    texto, n3 = re.subn(
+        r'signingConfig\s*=\s*signingConfigs\.getByName\("debug"\)',
+        'signingConfig = if (keystorePropertiesFile.exists()) '
+        'signingConfigs.getByName("release") else signingConfigs.getByName("debug")',
+        texto)
+    print(f"assinatura de publicação configurada ({n3} buildType)")
+elif not kts:
+    print("AVISO: build.gradle (Groovy) — assinatura de publicação não configurada")
+
 with open(gradle, "w", encoding="utf-8") as f:
     f.write(texto)
-print(f"{os.path.basename(gradle)}: applicationId={pacote}, minSdk=23")
+print(f"{os.path.basename(gradle)}: applicationId={pacote}, minSdk=23, targetSdk>=36")
 
 # ------------------------------------------------------------ AndroidManifest
 manifest = os.path.join(RAIZ, "android", "app", "src", "main", "AndroidManifest.xml")

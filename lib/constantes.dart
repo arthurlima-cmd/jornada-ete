@@ -2,6 +2,11 @@
 
 const String nomeEscola = 'ETE Antônio Dourado Cavalcanti';
 
+/// Páginas públicas (GitHub Pages, pasta docs/ do repositório).
+const String urlSite = 'https://arthurlima-cmd.github.io/jornada-ete';
+const String urlPrivacidade = '$urlSite/privacidade.html';
+const String urlExcluirConta = '$urlSite/excluir-conta.html';
+
 /// Dias letivos, no mesmo formato gravado no campo `dia_semana`.
 const List<String> diasSemana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
 

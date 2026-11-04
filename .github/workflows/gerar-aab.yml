@@ -1,0 +1,121 @@
+name: Gerar AAB (Play Store)
+
+# Roda manualmente: aba Actions -> "Gerar AAB (Play Store)" -> Run workflow.
+# Gera o .aab assinado com a CHAVE DE UPLOAD, pronto para o Google Play Console.
+#
+# Segredos necessários (Settings -> Secrets and variables -> Actions):
+#   ANDROID_KEYSTORE_BASE64    conteúdo do arquivo .jks em base64
+#   ANDROID_KEYSTORE_PASSWORD  senha da chave
+#   ANDROID_KEY_ALIAS          apelido da chave (upload)
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PACOTE: br.edu.eteadc.jornadaete
+
+jobs:
+  aab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Conferir segredos da chave de assinatura
+        env:
+          KS: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          if [ -z "$KS" ] || [ -z "$PASS" ] || [ -z "$ALIAS" ]; then
+            echo "::error::Cadastre os segredos ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD e ANDROID_KEY_ALIAS em Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Instalar Flutter (stable)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Criar a pasta android/
+        run: flutter create --platforms=android --org br.edu.eteadc --project-name jornada_ete .
+
+      - name: Configurar Firebase
+        id: firebase
+        run: python3 tool/gerar_firebase_options.py "$PACOTE"
+
+      - name: Ajustar Android (pacote, SDK 36, assinatura, ícones)
+        run: python3 tool/ajustar_android.py "${{ steps.firebase.outputs.package }}"
+
+      - name: Instalar a chave de upload
+        env:
+          KS: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          echo "$KS" | base64 -d > android/app/upload.jks
+          {
+            echo "storeFile=upload.jks"
+            echo "storePassword=$PASS"
+            echo "keyAlias=$ALIAS"
+            echo "keyPassword=$PASS"
+          } > android/key.properties
+
+      - name: Baixar dependências
+        run: flutter pub get
+
+      - name: Verificar o código
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Testes automáticos
+        run: flutter test
+
+      - name: Compilar AAB
+        run: |
+          flutter build appbundle --release \
+            --build-name=1.1.${{ github.run_number }} \
+            --build-number=${{ github.run_number }}
+
+      - name: Conferir assinatura (deve ser a chave de upload)
+        run: |
+          AAB=build/app/outputs/bundle/release/app-release.aab
+          jarsigner -verify -verbose -certs "$AAB" > assinatura.txt 2>&1 || true
+          if ! grep -q "CN=Jornada ETE" assinatura.txt; then
+            echo "::error::O AAB não foi assinado com a chave de upload."
+            exit 1
+          fi
+          echo "Assinado com a chave de upload (CN=Jornada ETE).
+          cp "$AAB" "Jornada_ETE_1.1.${{ github.run_number }}.aab"
+
+      - name: Apagar a chave do servidor
+        if: always()
+        run: rm -f android/app/upload.jks android/key.properties
+
+      - name: Guardar o AAB (artefato)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jornada_ETE_1.1.${{ github.run_number }}-playstore
+          path: |
+            Jornada_ETE_1.1.${{ github.run_number }}.aab
+            build/app/outputs/mapping/release/mapping.txt
+          if-no-files-found: warn
+
+      - name: Publicar na página de Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: playstore-1.1.${{ github.run_number }}
+          name: Jornada ETE 1.1.${{ github.run_number }} (Play Store)
+          body: |
+            Arquivo .aab assinado com a chave de upload, para enviar ao Google Play Console.
+            Versão 1.1.${{ github.run_number }} (código ${{ github.run_number }}).
+          files: Jornada_ETE_1.1.${{ github.run_number }}.aab

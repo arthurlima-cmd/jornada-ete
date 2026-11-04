@@ -22,12 +22,14 @@ service cloud.firestore {
     }
 
     match /usuarios/{uid} {
-      allow read: if logado();
+      // Cada estudante lê só o próprio perfil; professores leem todos.
+      allow read: if logado() && (request.auth.uid == uid || ehProfessor());
       allow create: if logado() && request.auth.uid == uid
                     && request.resource.data.tipo == 'estudante';
       allow update: if logado() && request.auth.uid == uid
                     && request.resource.data.tipo == resource.data.tipo;
-      allow delete: if false;
+      // Exclusão da própria conta (exigência do Google Play).
+      allow delete: if logado() && request.auth.uid == uid;
     }
 
     // Lista de turmas: leitura liberada (usada na tela de cadastro, antes do login).
