@@ -95,7 +95,7 @@ jobs:
             exit 1
           fi
           echo "Assinado com a chave de upload (CN=Jornada ETE).
-          cp "$AAB" "Jornada_ETE_1.1.${{ github.run_number }}.aab"
+          cp "$AAB" "Jornada_ETEADC_1.1.${{ github.run_number }}.aab"
 
       - name: Apagar a chave do servidor
         if: always()
@@ -104,9 +104,9 @@ jobs:
       - name: Guardar o AAB (artefato)
         uses: actions/upload-artifact@v4
         with:
-          name: Jornada_ETE_1.1.${{ github.run_number }}-playstore
+          name: Jornada_ETEADC_1.1.${{ github.run_number }}-playstore
           path: |
-            Jornada_ETE_1.1.${{ github.run_number }}.aab
+            Jornada_ETEADC_1.1.${{ github.run_number }}.aab
             build/app/outputs/mapping/release/mapping.txt
           if-no-files-found: warn
 
@@ -114,8 +114,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: playstore-1.1.${{ github.run_number }}
-          name: Jornada ETE 1.1.${{ github.run_number }} (Play Store)
+          name: Jornada ETEADC 1.1.${{ github.run_number }} (Play Store)
           body: |
             Arquivo .aab assinado com a chave de upload, para enviar ao Google Play Console.
             Versão 1.1.${{ github.run_number }} (código ${{ github.run_number }}).
-          files: Jornada_ETE_1.1.${{ github.run_number }}.aab
+          files: Jornada_ETEADC_1.1.${{ github.run_number }}.aab

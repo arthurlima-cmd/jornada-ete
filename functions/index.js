@@ -1,4 +1,4 @@
-// Jornada ETE — notificação automática de avisos, eventos e atividades.
+// Jornada ETEADC — notificação automática de avisos, eventos e atividades.
 //
 // Quando um documento é criado na coleção "avisos", envia uma notificação
 // (Firebase Cloud Messaging) para os celulares inscritos no tópico:

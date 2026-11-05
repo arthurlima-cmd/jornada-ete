@@ -93,7 +93,7 @@ manifest = os.path.join(RAIZ, "android", "app", "src", "main", "AndroidManifest.
 with open(manifest, encoding="utf-8") as f:
     m = f.read()
 
-m = re.sub(r'android:label="[^"]*"', 'android:label="Jornada ETE"', m, count=1)
+m = re.sub(r'android:label="[^"]*"', 'android:label="Jornada ETEADC"', m, count=1)
 if "android.permission.INTERNET" not in m:
     m = m.replace(
         "<application",

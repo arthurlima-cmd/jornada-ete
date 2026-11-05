@@ -24,7 +24,7 @@ class AbaPerfil extends StatelessWidget {
   Future<void> _sair(BuildContext context) async {
     final ok = await confirmar(context,
         titulo: 'Sair da conta',
-        mensagem: 'Deseja mesmo sair do Jornada ETE?',
+        mensagem: 'Deseja mesmo sair do Jornada ETEADC?',
         textoConfirmar: 'Sair');
     if (!ok) return;
     if (context.mounted) Navigator.of(context).popUntil((r) => r.isFirst);

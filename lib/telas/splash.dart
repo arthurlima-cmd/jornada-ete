@@ -104,7 +104,7 @@ class _SplashTelaState extends State<SplashTela>
           behavior: HitTestBehavior.opaque,
           onTap: _seguir, // toque pula a animação (uma única vez)
           child: Semantics(
-            label: 'Jornada ETE, $nomeEscola. Toque para continuar.',
+            label: 'Jornada ETEADC, $nomeEscola. Toque para continuar.',
             // SizedBox.expand: a pilha ocupa a tela inteira, então as duas
             // logos ficam centralizadas na horizontal e na vertical.
             child: SizedBox.expand(
@@ -135,7 +135,7 @@ class _SplashTelaState extends State<SplashTela>
                     semanticLabel: 'ETE Antônio Dourado Cavalcanti',
                     errorBuilder: (_, __, ___) => const _MarcaProvisoria(
                       icone: Icons.school_rounded,
-                      titulo: 'Jornada ETE',
+                      titulo: 'Jornada ETEADC',
                       subtitulo: nomeEscola,
                     ),
                   ),

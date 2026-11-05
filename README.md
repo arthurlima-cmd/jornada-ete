@@ -1,4 +1,4 @@
-# Jornada ETE
+# Jornada ETEADC
 
 Aplicativo da **ETE Antônio Dourado Cavalcanti** que reúne num só lugar a rotina
 escolar: quadro de horários, calendário de provas, avisos e eventos da gestão,
@@ -12,7 +12,7 @@ com todas as correções da análise aplicadas.
 
 Cada envio para a branch `main` gera um APK automaticamente (GitHub Actions):
 
-1. Abra a aba **Releases** do repositório e baixe o `jornada-ete.apk` mais recente.
+1. Abra a aba **Releases** do repositório e baixe o `jornada-eteadc.apk` mais recente.
 2. No celular Android, abra o arquivo e permita **"instalar apps de fontes desconhecidas"**.
 
 Também é possível gerar manualmente: aba **Actions → Gerar APK → Run workflow**.

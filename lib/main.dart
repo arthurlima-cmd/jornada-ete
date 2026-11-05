@@ -35,7 +35,7 @@ class _ErroConfiguracao extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Text(
-              'Não foi possível iniciar o Jornada ETE.\n\n$mensagem',
+              'Não foi possível iniciar o Jornada ETEADC.\n\n$mensagem',
               textAlign: TextAlign.center,
             ),
           ),
@@ -51,7 +51,7 @@ class JornadaEteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Jornada ETE',
+      title: 'Jornada ETEADC',
       debugShowCheckedModeBanner: false,
       scaffoldMessengerKey: Notificacoes.mensageiro,
       theme: temaJornada(),

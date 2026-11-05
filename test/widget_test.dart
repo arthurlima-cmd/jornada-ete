@@ -54,4 +54,15 @@ void main() {
       expect((r['professor'] as String).isNotEmpty, isTrue);
     }
   });
+
+  test('agenda: eventos anuais com data e categoria válidas', () {
+    expect(eventosAnuais, isNotEmpty);
+    for (final e in eventosAnuais) {
+      final d = DateTime(2026, e.mes, e.dia);
+      expect(d.month, e.mes, reason: e.titulo); // data existe no calendário
+      expect(categoriasAgenda.containsKey(e.categoria), isTrue, reason: e.titulo);
+      expect(RegExp(r'^\d{2}:\d{2}$').hasMatch(e.inicio), isTrue);
+      expect(RegExp(r'^\d{2}:\d{2}$').hasMatch(e.fim), isTrue);
+    }
+  });
 }

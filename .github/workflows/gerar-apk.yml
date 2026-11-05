@@ -51,21 +51,21 @@ jobs:
         run: flutter build apk --release
 
       - name: Renomear APK
-        run: cp build/app/outputs/flutter-apk/app-release.apk jornada-ete.apk
+        run: cp build/app/outputs/flutter-apk/app-release.apk jornada-eteadc.apk
 
       - name: Guardar APK (artefato)
         uses: actions/upload-artifact@v4
         with:
           name: jornada-ete-apk
-          path: jornada-ete.apk
+          path: jornada-eteadc.apk
 
       - name: Publicar na página de Releases
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.${{ github.run_number }}
-          name: Jornada ETE 1.0.${{ github.run_number }}
+          name: Jornada ETEADC 1.0.${{ github.run_number }}
           body: |
-            APK de teste do Jornada ETE.
-            Baixe o arquivo jornada-ete.apk no celular Android e instale
+            APK de teste do Jornada ETEADC.
+            Baixe o arquivo jornada-eteadc.apk no celular Android e instale
             (permita "instalar apps de fontes desconhecidas").
-          files: jornada-ete.apk
+          files: jornada-eteadc.apk

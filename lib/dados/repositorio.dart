@@ -344,34 +344,83 @@ class Repo {
 
   static Future<void> excluirAviso(String id) => _col('avisos').doc(id).delete();
 
-  // ------------------------------------------------------------- cardápio
-  static Stream<List<ItemCardapio>> cardapio(String dia) => _col('cardapio')
-          .where('dia_semana', isEqualTo: dia)
-          .snapshots()
-          .map((s) {
-        final lista = s.docs.map(ItemCardapio.doDoc).toList();
-        int pos(String r) {
-          final i = refeicoes.indexOf(r);
-          return i < 0 ? 99 : i;
-        }
-
-        lista.sort((a, b) => pos(a.refeicao).compareTo(pos(b.refeicao)));
+  // --------------------------------------------------------------- agenda
+  static Stream<List<EventoAgenda>> eventosAgenda() =>
+      _col('eventos').snapshots().map((s) {
+        final lista = s.docs.map(EventoAgenda.doDoc).toList();
+        lista.sort((a, b) =>
+            (a.data ?? DateTime(2100)).compareTo(b.data ?? DateTime(2100)));
         return lista;
       });
 
-  static Future<void> salvarItemCardapio({
-    required String dia,
-    required String refeicao,
-    required String itens,
+  static Map<String, dynamic> _dadosEvento({
+    required String titulo,
+    required String descricao,
+    required DateTime data,
+    required String horaInicio,
+    required String horaFim,
+    required String local,
+    required String categoria,
+    required Usuario autor,
+  }) =>
+      {
+        'titulo': titulo,
+        'descricao': descricao,
+        'data': Timestamp.fromDate(DateTime(data.year, data.month, data.day, 12)),
+        'hora_inicio': horaInicio,
+        'hora_fim': horaFim,
+        'local': local,
+        'categoria': categoria,
+        'autor': autor.ref,
+        'autor_nome': autor.nome,
+        'atualizado_em': FieldValue.serverTimestamp(),
+      };
+
+  static Future<void> salvarEvento({
+    String? id,
+    required Usuario autor,
+    required String titulo,
+    required String descricao,
+    required DateTime data,
+    required String horaInicio,
+    required String horaFim,
+    required String local,
+    required String categoria,
   }) {
-    return _col('cardapio').add({
-      'dia_semana': dia,
-      'refeicao': refeicao,
-      'itens': itens,
-      'atualizado_em': FieldValue.serverTimestamp(),
-    });
+    final ref = id == null ? _col('eventos').doc() : _col('eventos').doc(id);
+    return ref.set(_dadosEvento(
+      titulo: titulo,
+      descricao: descricao,
+      data: data,
+      horaInicio: horaInicio,
+      horaFim: horaFim,
+      local: local,
+      categoria: categoria,
+      autor: autor,
+    ));
   }
 
-  static Future<void> excluirItemCardapio(String id) =>
-      _col('cardapio').doc(id).delete();
+  static Future<void> excluirEvento(String id) => _col('eventos').doc(id).delete();
+
+  /// Grava os eventos anuais de modelo (constantes.dart) no ano indicado.
+  static Future<int> salvarEventosAnuais(int ano, Usuario autor) async {
+    final lote = _db.batch();
+    for (final e in eventosAnuais) {
+      lote.set(
+        _col('eventos').doc('${ano}_${slug(e.titulo)}'),
+        _dadosEvento(
+          titulo: e.titulo,
+          descricao: e.descricao,
+          data: DateTime(ano, e.mes, e.dia),
+          horaInicio: e.inicio,
+          horaFim: e.fim,
+          local: e.local,
+          categoria: e.categoria,
+          autor: autor,
+        ),
+      );
+    }
+    await lote.commit();
+    return eventosAnuais.length;
+  }
 }

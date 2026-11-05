@@ -43,7 +43,7 @@ class ConectarTela extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'Jornada ETE',
+                    'Jornada ETEADC',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -65,7 +65,7 @@ class ConectarTela extends StatelessWidget {
                     icone: Icons.backpack_outlined,
                     titulo: 'Sou estudante',
                     descricao:
-                        'Veja seus horários, provas, avisos e o cardápio da escola.',
+                        'Veja seus horários, provas, avisos e a agenda da escola.',
                     onTap: () => _abrir(context, 'estudante'),
                   ),
                   const SizedBox(height: 12),

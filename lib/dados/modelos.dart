@@ -178,29 +178,45 @@ class Aviso {
   bool ehDe(String uid) => autor?.id == uid;
 }
 
-/// Documento da coleção `cardapio`.
-class ItemCardapio {
+/// Documento da coleção `eventos` (Agenda anual da escola).
+class EventoAgenda {
   final String id;
-  final String diaSemana;
-  final String refeicao;
-  final String itens;
+  final String titulo;
+  final String descricao;
+  final DateTime? data;
+  final String horaInicio; // "08:00"
+  final String horaFim; // "15:00"
+  final String local;
+  final String categoria;
 
-  const ItemCardapio({
+  const EventoAgenda({
     required this.id,
-    required this.diaSemana,
-    required this.refeicao,
-    required this.itens,
+    required this.titulo,
+    required this.descricao,
+    required this.data,
+    required this.horaInicio,
+    required this.horaFim,
+    required this.local,
+    required this.categoria,
   });
 
-  factory ItemCardapio.doDoc(DocumentSnapshot<Map<String, dynamic>> d) {
+  factory EventoAgenda.doDoc(DocumentSnapshot<Map<String, dynamic>> d) {
     final m = d.data() ?? const <String, dynamic>{};
-    return ItemCardapio(
+    return EventoAgenda(
       id: d.id,
-      diaSemana: _txt(m['dia_semana']),
-      refeicao: _txt(m['refeicao']),
-      itens: _txt(m['itens']),
+      titulo: _txt(m['titulo']),
+      descricao: _txt(m['descricao']),
+      data: _data(m['data']),
+      horaInicio: _txt(m['hora_inicio']),
+      horaFim: _txt(m['hora_fim']),
+      local: _txt(m['local']),
+      categoria: _txt(m['categoria']).isEmpty ? 'geral' : _txt(m['categoria']),
     );
   }
+
+  String get horario => horaInicio.isEmpty
+      ? ''
+      : (horaFim.isEmpty ? horaInicio : '$horaInicio - $horaFim');
 }
 
 /// Documento da coleção `turmas`.

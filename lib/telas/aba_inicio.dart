@@ -8,7 +8,7 @@ import '../tema.dart';
 import '../widgets/comuns.dart';
 import 'cadastro_horarios.dart';
 import 'cadastro_provas.dart';
-import 'cardapio.dart';
+import 'agenda.dart';
 import 'contatos.dart';
 import 'info_escola.dart';
 import 'publicar_aviso.dart';
@@ -38,7 +38,7 @@ class _AbaInicioState extends State<AbaInicio> {
     final dataHoje = DateFormat("EEEE, d 'de' MMMM", 'pt_BR').format(DateTime.now());
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Jornada ETE')),
+      appBar: AppBar(title: const Text('Jornada ETEADC')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
         children: [
@@ -146,10 +146,10 @@ class _AbaInicioState extends State<AbaInicio> {
           const TituloSecao('Acesso rápido'),
           GradeAtalhos(filhos: [
             CardAtalho(
-              icone: Icons.restaurant_menu,
-              titulo: 'Cardápio',
-              cor: Cores.verde,
-              onTap: () => _abrir(CardapioTela(usuario: u)),
+              icone: Icons.event_note,
+              titulo: 'Agenda',
+              cor: const Color(0xFF6A0F4D),
+              onTap: () => _abrir(AgendaTela(usuario: u)),
             ),
             CardAtalho(
               icone: Icons.campaign_outlined,

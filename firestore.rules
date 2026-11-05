@@ -5,7 +5,7 @@ rules_version = '2';
 //
 // Principais mudanças em relação às regras do protótipo:
 //  - nada é público: é preciso estar logado para ler
-//  - só professores (tipo == "professor") criam horários, provas, avisos e cardápio
+//  - só professores (tipo == "professor") criam horários, provas, avisos e eventos da agenda
 //  - cada professor só edita/exclui o que ele mesmo cadastrou
 //  - ninguém se promove a professor pelo app (a gestão altera o campo "tipo")
 service cloud.firestore {
@@ -60,7 +60,8 @@ service cloud.firestore {
       allow update, delete: if ehProfessor() && resource.data.autor == meuDoc();
     }
 
-    match /cardapio/{id} {
+    // Agenda anual: qualquer professor cadastra ou altera eventos e datas.
+    match /eventos/{id} {
       allow read: if logado();
       allow write: if ehProfessor();
     }

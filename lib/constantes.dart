@@ -134,12 +134,48 @@ const List<String> tiposDeProva = [
 
 const List<String> tiposDeAviso = ['Aviso', 'Evento', 'Atividade'];
 
-const List<String> refeicoes = [
-  'Café da manhã',
-  'Lanche da manhã',
-  'Almoço',
-  'Lanche da tarde',
+/// Categorias da Agenda (definem o ícone e as cores do cartão).
+const Map<String, String> categoriasAgenda = {
+  'festa': 'Festa / celebração',
+  'musica': 'Música / carnaval',
+  'solidariedade': 'Solidariedade',
+  'homenagem': 'Homenagem',
+  'familia': 'Família',
+  'estudante': 'Estudantes',
+  'esporte': 'Esporte',
+  'academico': 'Acadêmico',
+  'geral': 'Outro',
+};
+
+/// Evento anual de modelo (usado até a agenda ser salva no banco).
+class EventoPadrao {
+  final String titulo;
+  final String descricao;
+  final int mes;
+  final int dia;
+  final String inicio;
+  final String fim;
+  final String local;
+  final String categoria;
+  const EventoPadrao(this.titulo, this.descricao, this.mes, this.dia,
+      this.inicio, this.fim, this.local, this.categoria);
+}
+
+/// Eventos anuais da escola (modelo enviado pela gestão).
+const List<EventoPadrao> eventosAnuais = [
+  EventoPadrao('Carnaval ETE', 'Muita música, alegria!', 2, 2, '08:00', '15:00', 'Pátio', 'musica'),
+  EventoPadrao('Páscoa Solidária', 'Um momento de união!', 3, 15, '08:00', '15:00', 'Pátio', 'solidariedade'),
+  EventoPadrao('Dia das mães', 'Homenagem especial!', 5, 10, '08:00', '15:00', 'Auditório', 'homenagem'),
+  EventoPadrao('Junina ETE', 'Grande festa junina!', 6, 22, '08:00', '15:00', 'Refeitório', 'festa'),
+  EventoPadrao('Dia dos pais', 'Homenagem especial!', 8, 9, '08:00', '15:00', 'Auditório', 'familia'),
+  EventoPadrao('Dia do estudante', 'Nosso novo começo!', 8, 11, '08:00', '15:00', 'Quadra', 'estudante'),
+  EventoPadrao('Interclasse', 'Tudo pela vitória!!', 9, 23, '08:00', '16:40', 'Quadra', 'esporte'),
 ];
+
+const List<String> mesesAbrev = [
+  'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez',
+];
+const List<String> diasAbrev = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
 
 /// Dia letivo de hoje ("Seg" ... "Sex"). Sábado e domingo retornam "Seg".
 String diaDeHoje() {

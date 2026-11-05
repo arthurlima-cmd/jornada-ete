@@ -2,7 +2,7 @@
 """Ajusta a pasta ios/ criada pelo `flutter create`:
 - bundle id (deve ser o mesmo do app iOS registrado no Firebase)
 - iOS mínimo 15.0 (exigido pelo Firebase)
-- nome exibido "Jornada ETE" e esquemas tel/mailto/https (url_launcher)
+- nome exibido "Jornada ETEADC" e esquemas tel/mailto/https (url_launcher)
 - ícone do app (gerado por tool/gerar_icones.py)
 
 Uso: python3 tool/ajustar_ios.py <bundle_id>
@@ -45,14 +45,14 @@ if os.path.exists(podfile):
 info = os.path.join(IOS, "Runner", "Info.plist")
 with open(info, "rb") as f:
     pl = plistlib.load(f)
-pl["CFBundleDisplayName"] = "Jornada ETE"
-pl["CFBundleName"] = "Jornada ETE"
+pl["CFBundleDisplayName"] = "Jornada ETEADC"
+pl["CFBundleName"] = "Jornada ETEADC"
 esquemas = set(pl.get("LSApplicationQueriesSchemes", []))
 esquemas.update(["tel", "mailto", "https", "whatsapp"])
 pl["LSApplicationQueriesSchemes"] = sorted(esquemas)
 with open(info, "wb") as f:
     plistlib.dump(pl, f)
-print("Info.plist: nome 'Jornada ETE' e esquemas de link")
+print("Info.plist: nome 'Jornada ETEADC' e esquemas de link")
 
 # ------------------------------------------------------------------- ícone
 origem = os.path.join(RAIZ, "tool", "icone", "ios", "AppIcon.appiconset")
