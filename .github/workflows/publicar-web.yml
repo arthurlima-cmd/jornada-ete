@@ -1,0 +1,67 @@
+name: Publicar versão web
+
+# Gera o Jornada ETEADC para navegador (Flutter Web) e grava em docs/app/,
+# que o GitHub Pages publica em https://arthurlima-cmd.github.io/jornada-ete/app/
+# Roda a cada alteração no código e também manualmente (Actions -> Run workflow).
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar-web
+  cancel-in-progress: true
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Instalar Flutter (stable)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Criar a pasta web/
+        run: flutter create --platforms=web --org br.edu.eteadc --project-name jornada_ete .
+
+      - name: Configurar Firebase
+        run: python3 tool/gerar_firebase_options.py br.edu.eteadc.jornadaete
+
+      - name: Ajustar web (nome, ícones, app instalável)
+        run: python3 tool/ajustar_web.py
+
+      - name: Baixar dependências
+        run: flutter pub get
+
+      - name: Verificar o código
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Compilar para navegador
+        run: flutter build web --release --base-href /jornada-ete/app/
+
+      - name: Publicar em docs/app
+        run: |
+          rm -rf docs/app
+          mkdir -p docs
+          cp -r build/web docs/app
+          touch docs/.nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/app docs/.nojekyll
+          if git diff --cached --quiet; then
+            echo "Nada mudou na versão web."
+            exit 0
+          fi
+          git commit -m "Versão web atualizada (${GITHUB_SHA::7})"
+          git pull --rebase origin main
+          git push origin HEAD:main

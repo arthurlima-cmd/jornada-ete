@@ -29,3 +29,6 @@ ios/Runner/*
 
 # Cloud Functions
 functions/node_modules/
+
+# Pasta web/ é gerada no GitHub Actions (flutter create)
+web/

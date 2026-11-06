@@ -16,6 +16,7 @@ import sys
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ANDROID = os.path.join(RAIZ, "android", "app", "google-services.json")
 IOS = os.path.join(RAIZ, "ios", "Runner", "GoogleService-Info.plist")
+WEB = os.path.join(RAIZ, "tool", "firebase_web.json")
 DESTINO = os.path.join(RAIZ, "lib", "firebase_options.dart")
 
 if not os.path.exists(ANDROID):
@@ -67,12 +68,32 @@ else:
     ios = "null"
     print("AVISO: ios/Runner/GoogleService-Info.plist não encontrado; iOS sem Firebase")
 
+if os.path.exists(WEB):
+    with open(WEB, encoding="utf-8") as f:
+        w = json.load(f)
+    web = "const " + bloco({
+        "apiKey": w["apiKey"],
+        "appId": w["appId"],
+        "messagingSenderId": w["messagingSenderId"],
+        "projectId": w["projectId"],
+        "authDomain": w.get("authDomain", ""),
+        "storageBucket": w.get("storageBucket", ""),
+    })
+    print("Web configurado")
+else:
+    web = "null"
+
 codigo = f"""// GERADO AUTOMATICAMENTE por tool/gerar_firebase_options.py — não edite.
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
 class DefaultFirebaseOptions {{
   static FirebaseOptions get currentPlatform {{
+    // No navegador vem primeiro: num iPhone, o Safari também se diz "iOS".
+    if (kIsWeb) {{
+      return web ??
+          (throw UnsupportedError('Firebase ainda não configurado para a web.'));
+    }}
     if (defaultTargetPlatform == TargetPlatform.iOS) {{
       return ios ??
           (throw UnsupportedError(
@@ -85,6 +106,8 @@ class DefaultFirebaseOptions {{
   static const FirebaseOptions android = {android};
 
   static const FirebaseOptions? ios = {ios};
+
+  static const FirebaseOptions? web = {web};
 }}
 """
 with open(DESTINO, "w", encoding="utf-8") as f:
