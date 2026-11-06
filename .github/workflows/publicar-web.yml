@@ -63,5 +63,5 @@ jobs:
             exit 0
           fi
           git commit -m "Versão web atualizada (${GITHUB_SHA::7})"
-          git pull --rebase origin main
+          git pull --rebase --autostash origin main
           git push origin HEAD:main
