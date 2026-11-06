@@ -1,11 +1,24 @@
-name: Compilar iOS
+name: Gerar IPA (iOS)
 
-# Roda manualmente: aba Actions -> "Compilar iOS" -> Run workflow.
-# Gera o app iOS SEM assinatura: serve para confirmar que o projeto compila.
-# Para instalar em iPhones, é preciso assinar com uma conta Apple Developer
-# (TestFlight ou Ad Hoc) — esse passo será adicionado quando a conta existir.
+# Roda manualmente: aba Actions -> "Gerar IPA (iOS)" -> Run workflow.
+# Gera o arquivo .ipa do Jornada ETEADC e publica em Releases.
+#
+# IMPORTANTE: o .ipa sai SEM assinatura da Apple. O iPhone só instala apps
+# assinados; para instalar, é preciso uma conta Apple Developer (TestFlight,
+# App Store ou Ad Hoc) ou reassinar o .ipa com um Apple ID (ex.: Sideloadly).
 on:
   workflow_dispatch:
+    inputs:
+      versao:
+        description: "Versão (ex.: 1.0.13)"
+        required: true
+        default: "1.0.13"
+
+permissions:
+  contents: write
+
+env:
+  BUNDLE: br.edu.eteadc.jornadaete
 
 jobs:
   ios:
@@ -24,28 +37,45 @@ jobs:
       - name: Criar a pasta ios/
         run: flutter create --platforms=ios --org br.edu.eteadc --project-name jornada_ete .
 
-      - name: Configurar Firebase
+      - name: Configurar Firebase (Android e iOS)
         run: python3 tool/gerar_firebase_options.py br.edu.eteadc.jornadaete
-
-      - name: Ajustar iOS (bundle, iOS 15, nome, ícone)
-        run: python3 tool/ajustar_ios.py br.edu.eteadc.jornadaete
 
       - name: Baixar dependências
         run: flutter pub get
+
+      - name: Ajustar iOS (bundle, iOS 15, nome, ícone, notificações)
+        run: python3 tool/ajustar_ios.py "$BUNDLE"
 
       - name: Verificar o código
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Compilar para iPhone (sem assinatura)
-        run: flutter build ios --release --no-codesign
-
-      - name: Empacotar
         run: |
-          cd build/ios/iphoneos
-          zip -qry "$GITHUB_WORKSPACE/Jornada_ete_v1.0.4-ios-sem-assinatura.zip" Runner.app
+          N=$(echo "${{ inputs.versao }}" | awk -F. '{print $NF}')
+          flutter build ios --release --no-codesign \
+            --build-name="${{ inputs.versao }}" --build-number="$N"
 
-      - name: Guardar o app iOS (artefato)
+      - name: Empacotar .ipa
+        run: |
+          rm -rf Payload && mkdir Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          zip -qry "Jornada_ETEADC_v${{ inputs.versao }}_iOS.ipa" Payload
+          ls -la *.ipa
+
+      - name: Guardar o .ipa (artefato)
         uses: actions/upload-artifact@v4
         with:
-          name: Jornada_ete_v1.0.4-ios-sem-assinatura
-          path: Jornada_ete_v1.0.4-ios-sem-assinatura.zip
+          name: Jornada_ETEADC_v${{ inputs.versao }}_iOS
+          path: Jornada_ETEADC_v${{ inputs.versao }}_iOS.ipa
+
+      - name: Publicar na página de Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ios-v${{ inputs.versao }}
+          name: Jornada ETEADC ${{ inputs.versao }} (iOS, sem assinatura)
+          body: |
+            Arquivo .ipa do Jornada ETEADC para iPhone (iOS 15 ou mais novo).
+            ATENÇÃO: sem assinatura da Apple. Para instalar, é preciso assinar com
+            uma conta Apple Developer (TestFlight/App Store/Ad Hoc) ou reassinar com
+            um Apple ID em um computador (ex.: Sideloadly; expira em 7 dias).
+          files: Jornada_ETEADC_v${{ inputs.versao }}_iOS.ipa

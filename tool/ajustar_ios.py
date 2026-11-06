@@ -50,6 +50,11 @@ pl["CFBundleName"] = "Jornada ETEADC"
 esquemas = set(pl.get("LSApplicationQueriesSchemes", []))
 esquemas.update(["tel", "mailto", "https", "whatsapp"])
 pl["LSApplicationQueriesSchemes"] = sorted(esquemas)
+# Notificações (Firebase Cloud Messaging) em segundo plano.
+modos = set(pl.get("UIBackgroundModes", []))
+modos.update(["remote-notification", "fetch"])
+pl["UIBackgroundModes"] = sorted(modos)
+pl["FirebaseAppDelegateProxyEnabled"] = True
 with open(info, "wb") as f:
     plistlib.dump(pl, f)
 print("Info.plist: nome 'Jornada ETEADC' e esquemas de link")
