@@ -32,3 +32,6 @@ functions/node_modules/
 
 # Pasta web/ é gerada no GitHub Actions (flutter create)
 /web/
+
+# Pasta temporária do Firebase Hosting
+site/

@@ -7,5 +7,20 @@
   ],
   "firestore": {
     "rules": "firestore.rules"
+  },
+  "hosting": {
+    "public": "site",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/jornada-ete/app/",
+        "type": 302
+      }
+    ]
   }
 }
