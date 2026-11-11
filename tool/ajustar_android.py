@@ -84,6 +84,17 @@ android {''', 1)
 elif not kts:
     print("AVISO: build.gradle (Groovy) — assinatura de publicação não configurada")
 
+# O lint de release do Android quebra com um erro interno (bug do próprio lint)
+# ao analisar o plugin do Firebase nas versões novas do Flutter. A checagem não
+# altera o aplicativo gerado, então ela é desligada na compilação de release.
+if "checkReleaseBuilds" not in texto:
+    if kts:
+        bloco = "    lint {\n        checkReleaseBuilds = false\n        abortOnError = false\n    }\n\n    buildTypes {"
+    else:
+        bloco = "    lintOptions {\n        checkReleaseBuilds false\n        abortOnError false\n    }\n\n    buildTypes {"
+    texto = texto.replace("    buildTypes {", bloco, 1)
+    print("lint de release desligado")
+
 with open(gradle, "w", encoding="utf-8") as f:
     f.write(texto)
 print(f"{os.path.basename(gradle)}: applicationId={pacote}, minSdk=23, targetSdk>=36")
