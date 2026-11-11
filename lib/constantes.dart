@@ -229,7 +229,7 @@ const String sobreEscola =
     'alunos para os desafios do mercado de trabalho.';
 
 const String enderecoEscola = 'Loteamento Frei Damião';
-const List<String> telefonesEscola = ['(87) 3773-4940', '(87) 3773-4039'];
+const List<String> telefonesEscola = ['(87) 98863-8350'];
 
 class Contato {
   final String nome;
