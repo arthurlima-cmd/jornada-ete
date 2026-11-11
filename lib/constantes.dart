@@ -241,7 +241,7 @@ class Contato {
 
 const List<Contato> contatosEscola = [
   Contato('Gestão ETE', 'Secretaria e gestão', '5587988638350',
-      'eteadc2014@gmail.com'),
+      'gestaoeteadc@hotmail.com'),
   Contato('Leandro Rocha', 'Diretor', '5587981315064',
       'leandrorochaete@gmail.com'),
   Contato('Noel Félix', 'Assistente de Gestão', '5587999124595',
