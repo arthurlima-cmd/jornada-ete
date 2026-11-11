@@ -57,7 +57,7 @@ class InfoEscolaTela extends StatelessWidget {
               ),
             ),
           ),
-          const TituloSecao('Telefones'),
+          TituloSecao(telefonesEscola.length > 1 ? 'Telefones' : 'Telefone'),
           for (final t in telefonesEscola)
             Card(
               elevation: 0,

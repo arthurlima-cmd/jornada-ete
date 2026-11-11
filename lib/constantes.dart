@@ -244,7 +244,22 @@ const List<Contato> contatosEscola = [
       'eteadc2014@gmail.com'),
   Contato('Leandro Rocha', 'Diretor', '5587981315064',
       'leandrorochaete@gmail.com'),
-  Contato('Arthur Lima', 'Professor', '5581997754040',
+  Contato('Noel Félix', 'Assistente de Gestão', '5587999124595',
+      'noelfelixete@gmail.com'),
+  Contato('Arthur Lima', 'Professor - desenvolvedor de sistemas', '5581997754040',
       'arthurlima.upe@gmail.com'),
-  Contato('Noel Félix', 'Professor', '5587999124595', 'noelfelixete@gmail.com'),
 ];
+
+/// Créditos do aplicativo (tela Contatos).
+const String instituicaoParceira = 'Artez Comunicação Visual';
+const String coordenadorProjeto = 'Edyedson Arthur P. de Lima';
+const List<String> desenvolvedoresApp = [
+  'Gabriel Santos da Silva',
+  'Luiz Henrique Cardoso dos Santos',
+];
+const List<String> designersApp = [
+  'Evelyn Mylaine Ramos da Silva',
+  'Maria Clara da Silva',
+];
+const String criatividadeApp = 'Maria Sophia de Araújo Santos';
+const String liderApp = 'Claudyanny Joelly Oliveira de Mélo';
