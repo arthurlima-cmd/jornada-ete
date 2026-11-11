@@ -246,7 +246,7 @@ const List<Contato> contatosEscola = [
       'leandrorochaete@gmail.com'),
   Contato('Noel Félix', 'Assistente de Gestão', '5587999124595',
       'noelfelixete@gmail.com'),
-  Contato('Arthur Lima', 'Professor - desenvolvedor de sistemas', '5581997754040',
+  Contato('Arthur Lima', 'Professor - Desenvolvedor de Sistemas', '5581997754040',
       'arthurlima.upe@gmail.com'),
 ];
 
