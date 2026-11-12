@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../constantes.dart';
@@ -71,8 +72,11 @@ class InfoEscolaTela extends StatelessWidget {
                     abrirLink(context, 'tel:${t.replaceAll(RegExp(r'[^0-9]'), '')}'),
               ),
             ),
-          const SizedBox(height: 8),
-          const QuadroSobreApp(),
+          // Créditos do aplicativo: só na versão para navegador.
+          if (kIsWeb) ...[
+            const SizedBox(height: 8),
+            const QuadroSobreApp(),
+          ],
         ],
       ),
     );
