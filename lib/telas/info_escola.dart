@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../constantes.dart';
 import '../tema.dart';
 import '../widgets/comuns.dart';
-import '../widgets/sobre_app.dart';
 
 /// "Minha ETE": informações institucionais, com endereço e telefones clicáveis.
 class InfoEscolaTela extends StatelessWidget {
@@ -71,8 +70,6 @@ class InfoEscolaTela extends StatelessWidget {
                     abrirLink(context, 'tel:${t.replaceAll(RegExp(r'[^0-9]'), '')}'),
               ),
             ),
-          const SizedBox(height: 8),
-          const QuadroSobreApp(),
         ],
       ),
     );
