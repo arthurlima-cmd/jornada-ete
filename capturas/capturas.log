@@ -1,0 +1,579 @@
+00:00 +0: loading /home/runner/work/jornada-ete/jornada-ete/test/capturas_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: splash
+captura: 01a_splash_inicio.png
+captura: 01_splash.png
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following FirebaseException was thrown building Builder:
+[core/no-app] No Firebase App '[DEFAULT]' has been created - call Firebase.initializeApp()
+
+When the exception was thrown, this was the stack:
+#0      MethodChannelFirebase.app (package:firebase_core_platform_interface/src/method_channel/method_channel_firebase.dart:195:5)
+#1      Firebase.app (package:firebase_core/src/firebase.dart:92:41)
+#2      FirebaseAuth.instance (package:firebase_auth/src/firebase_auth.dart:38:47)
+#3      new _PortaoAuthState (package:jornada_ete/telas/portao.dart:23:44)
+#4      PortaoAuth.createState (package:jornada_ete/telas/portao.dart:19:38)
+#5      new StatefulElement (package:flutter/src/widgets/framework.dart:5920:60)
+#6      StatefulWidget.createElement (package:flutter/src/widgets/framework.dart:781:38)
+...     Normal element mounting (160 frames)
+#166    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4605:20)
+#167    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7288:36)
+#168    Element.updateChild (package:flutter/src/widgets/framework.dart:4077:18)
+#169    Element.updateChildren (package:flutter/src/widgets/framework.dart:4273:32)
+#170    MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7318:17)
+#171    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#172    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#173    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:6000:11)
+#174    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#175    StatefulElement.update (package:flutter/src/widgets/framework.dart:6025:5)
+#176    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#177    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#178    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#179    ProxyElement.update (package:flutter/src/widgets/framework.dart:6167:5)
+#180    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#181    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#182    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#183    ProxyElement.update (package:flutter/src/widgets/framework.dart:6167:5)
+#184    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#185    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#186    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#187    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:6000:11)
+#188    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#189    StatefulElement.update (package:flutter/src/widgets/framework.dart:6025:5)
+#190    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#191    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#192    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#193    ProxyElement.update (package:flutter/src/widgets/framework.dart:6167:5)
+#194    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#195    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#196    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#197    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:6000:11)
+#198    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#199    StatefulElement.update (package:flutter/src/widgets/framework.dart:6025:5)
+#200    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#201    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#202    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:6000:11)
+#203    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#204    StatefulElement.update (package:flutter/src/widgets/framework.dart:6025:5)
+#205    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#206    SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7146:14)
+#207    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#208    SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7146:14)
+#209    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#210    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#211    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#212    ProxyElement.update (package:flutter/src/widgets/framework.dart:6167:5)
+#213    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#214    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#215    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#216    ProxyElement.update (package:flutter/src/widgets/framework.dart:6167:5)
+#217    Element.updateChild (package:flutter/src/widgets/framework.dart:4055:15)
+#218    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5859:16)
+#219    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:6000:11)
+#220    Element.rebuild (package:flutter/src/widgets/framework.dart:5547:7)
+#221    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2768:15)
+#222    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2825:11)
+#223    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3129:18)
+#224    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2540:19)
+#225    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#226    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1433:15)
+#227    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1348:9)
+#228    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2369:9)
+#230    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#231    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2358:27)
+#232    WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#234    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#235    WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#236    capturar (file:///home/runner/work/jornada-ete/jornada-ete/test/capturas_test.dart:175:16)
+<asynchronous suspension>
+#237    main.<anonymous closure> (file:///home/runner/work/jornada-ete/jornada-ete/test/capturas_test.dart:209:5)
+<asynchronous suspension>
+#238    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#239    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1968:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -1: splash [E]
+  Test failed. See exception logs above.
+  The test description was: splash
+  
+══╡ EXCEPTION CAUGHT BY WIDGET INSPECTOR ╞══════════════════════════════════════════════════════════
+The following assertion was thrown:
+Looking up a deactivated widget's ancestor is unsafe.
+At this point the state of the widget's element tree is no longer stable.
+To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by
+calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+
+When the exception was thrown, this was the stack:
+#0      Element._debugCheckStateIsActiveForAncestorLookup.<anonymous closure> (package:flutter/src/widgets/framework.dart:5067:9)
+#1      Element._debugCheckStateIsActiveForAncestorLookup (package:flutter/src/widgets/framework.dart:5081:6)
+#2      Element.visitAncestorElements (package:flutter/src/widgets/framework.dart:5192:12)
+#3      _describeRelevantUserCode (package:flutter/src/widgets/widget_inspector.dart:4292:13)
+#4      _parseDiagnosticsNode (package:flutter/src/widgets/widget_inspector.dart:4211:12)
+#5      debugTransformDebugCreator (package:flutter/src/widgets/widget_inspector.dart:4190:21)
+#6      _FlutterErrorDetailsNode.builder (package:flutter/src/foundation/assertions.dart:1301:31)
+#7      DiagnosticableNode.getProperties (package:flutter/src/foundation/diagnostics.dart:2938:68)
+#8      TextTreeRenderer._debugRender (package:flutter/src/foundation/diagnostics.dart:1267:63)
+#9      TextTreeRenderer.render (package:flutter/src/foundation/diagnostics.dart:1134:14)
+#10     FlutterError.dumpErrorToConsole (package:flutter/src/foundation/assertions.dart:1031:13)
+#11     _defaultTestExceptionReporter (package:flutter_test/src/test_exception_reporter.dart:29:16)
+#12     TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1729:28)
+<asynchronous suspension>
+(elided 6 frames from dart:async and package:stack_trace)
+
+This exception was caught while trying to describe the user-relevant code of another error.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY WIDGET INSPECTOR ╞══════════════════════════════════════════════════════════
+The following assertion was thrown:
+Looking up a deactivated widget's ancestor is unsafe.
+At this point the state of the widget's element tree is no longer stable.
+To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by
+calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+
+When the exception was thrown, this was the stack:
+#0      Element._debugCheckStateIsActiveForAncestorLookup.<anonymous closure> (package:flutter/src/widgets/framework.dart:5067:9)
+#1      Element._debugCheckStateIsActiveForAncestorLookup (package:flutter/src/widgets/framework.dart:5081:6)
+#2      Element.visitAncestorElements (package:flutter/src/widgets/framework.dart:5192:12)
+#3      _describeRelevantUserCode (package:flutter/src/widgets/widget_inspector.dart:4292:13)
+#4      _parseDiagnosticsNode (package:flutter/src/widgets/widget_inspector.dart:4211:12)
+#5      debugTransformDebugCreator (package:flutter/src/widgets/widget_inspector.dart:4190:21)
+#6      _FlutterErrorDetailsNode.builder (package:flutter/src/foundation/assertions.dart:1301:31)
+#7      DiagnosticableNode.emptyBodyDescription (package:flutter/src/foundation/diagnostics.dart:2934:45)
+#8      TextTreeRenderer._debugRender (package:flutter/src/foundation/diagnostics.dart:1304:14)
+#9      TextTreeRenderer.render (package:flutter/src/foundation/diagnostics.dart:1134:14)
+#10     FlutterError.dumpErrorToConsole (package:flutter/src/foundation/assertions.dart:1031:13)
+#11     _defaultTestExceptionReporter (package:flutter_test/src/test_exception_reporter.dart:29:16)
+#12     TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1729:28)
+<asynchronous suspension>
+(elided 6 frames from dart:async and package:stack_trace)
+
+This exception was caught while trying to describe the user-relevant code of another error.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -1: conectar
+captura: 02_conectar.png
+00:01 +1 -1: login
+captura: 03_login_estudante.png
+captura: 04_login_professor.png
+00:02 +2 -1: abas do estudante
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+captura: 05_inicio_estudante.png
+captura: 05b_inicio_estudante_rolado.png
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+captura: 06_horarios.png
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+captura: 07_provas.png
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+captura: 08_avisos.png
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+captura: 09_perfil.png
+captura: 10_perfil_fim.png
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (15) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +2 -2: abas do estudante [E]
+  Test failed. See exception logs above.
+  The test description was: abas do estudante
+  
+00:06 +2 -2: professor
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+captura: 11_inicio_professor.png
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
+The following assertion was thrown:
+ListTile background color or ink splashes may be invisible.
+The ListTile is wrapped in a DecoratedBox that has a background color. Because ListTile paints its
+background and ink splashes on the nearest Material ancestor, this DecoratedBox will hide those
+effects.
+To fix this, wrap the ListTile in its own Material widget, or remove the background color from the
+intermediate DecoratedBox.
+
+ListTile: ListTile(onTap: Closure: () => void)
+DecoratedBox:
+  DecoratedBox(bg: BoxDecoration(color: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), border: Border.all(BorderSide(color: Color(alpha: 1.0000, red: 0.8667, green: 0.8902, blue: 0.9255, colorSpace: ColorSpace.sRGB))), borderRadius: BorderRadius.circular(16.0)))
+════════════════════════════════════════════════════════════════════════════════════════════════════
+captura: 13_perfil_professor.png
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (14) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:07 +2 -3: professor [E]
+  Test failed. See exception logs above.
+  The test description was: professor
+  
+00:07 +2 -3: agenda
+captura: 14_agenda.png
+00:07 +3 -3: contatos
+captura: 15_contatos.png
+captura: 16_contatos_creditos.png
+00:08 +4 -3: informacoes
+captura: 17_info_escola.png
+00:08 +5 -3: (tearDownAll)
+00:08 +5 -3: Some tests failed.
+
+Failing tests:
+  /home/runner/work/jornada-ete/jornada-ete/test/capturas_test.dart: abas do estudante
+  /home/runner/work/jornada-ete/jornada-ete/test/capturas_test.dart: professor
+  /home/runner/work/jornada-ete/jornada-ete/test/capturas_test.dart: splash
