@@ -27,6 +27,16 @@ jobs:
           rm -rf capturas
           flutter test test/capturas_test.dart -r expanded 2>&1 | tee capturas.log || true
           ls -la capturas || true
+      - name: QR codes
+        run: |
+          pip install "qrcode[pil]"
+          python3 -c "
+          import qrcode
+          for nome, url in [('qr_web','https://arthurlima-cmd.github.io/jornada-ete/app/'),('qr_apk','https://github.com/arthurlima-cmd/jornada-ete/releases/latest'),('qr_site','https://arthurlima-cmd.github.io/jornada-ete/')]:
+              q = qrcode.QRCode(border=2, box_size=20, error_correction=qrcode.constants.ERROR_CORRECT_M)
+              q.add_data(url); q.make(fit=True)
+              q.make_image(fill_color=(9,21,64), back_color='white').save('capturas/' + nome + '.png')
+          "
       - name: Salvar no branch
         run: |
           mkdir -p capturas && cp capturas.log capturas/
