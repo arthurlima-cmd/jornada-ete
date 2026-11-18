@@ -365,11 +365,11 @@ The following message was thrown:
 Multiple exceptions (15) were detected during the running of the current test, and at least one was
 unexpected.
 ════════════════════════════════════════════════════════════════════════════════════════════════════
-00:06 +2 -2: abas do estudante [E]
+00:05 +2 -2: abas do estudante [E]
   Test failed. See exception logs above.
   The test description was: abas do estudante
   
-00:06 +2 -2: professor
+00:05 +2 -2: professor
 ══╡ EXCEPTION CAUGHT BY FLUTTER FRAMEWORK ╞═════════════════════════════════════════════════════════
 The following assertion was thrown:
 ListTile background color or ink splashes may be invisible.
@@ -559,19 +559,19 @@ The following message was thrown:
 Multiple exceptions (14) were detected during the running of the current test, and at least one was
 unexpected.
 ════════════════════════════════════════════════════════════════════════════════════════════════════
-00:07 +2 -3: professor [E]
+00:06 +2 -3: professor [E]
   Test failed. See exception logs above.
   The test description was: professor
   
-00:07 +2 -3: agenda
+00:06 +2 -3: agenda
 captura: 14_agenda.png
-00:07 +3 -3: contatos
+00:06 +3 -3: contatos
 captura: 15_contatos.png
 captura: 16_contatos_creditos.png
-00:08 +4 -3: informacoes
+00:07 +4 -3: informacoes
 captura: 17_info_escola.png
-00:08 +5 -3: (tearDownAll)
-00:08 +5 -3: Some tests failed.
+00:07 +5 -3: (tearDownAll)
+00:07 +5 -3: Some tests failed.
 
 Failing tests:
   /home/runner/work/jornada-ete/jornada-ete/test/capturas_test.dart: abas do estudante
