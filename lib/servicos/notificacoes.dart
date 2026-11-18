@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constantes.dart';
 import '../dados/modelos.dart';
+import '../dados/repositorio.dart';
 
 /// Notificações de avisos, eventos e atividades (Firebase Cloud Messaging).
 ///
@@ -30,7 +31,7 @@ class Notificacoes {
 
   /// Pede permissão e inscreve o celular nos tópicos do usuário.
   static Future<void> configurar(Usuario usuario) async {
-    if (kIsWeb) return;
+    if (kIsWeb || Repo.demo) return;
     try {
       final fm = FirebaseMessaging.instance;
       final permissao = await fm.requestPermission(alert: true, badge: true, sound: true);

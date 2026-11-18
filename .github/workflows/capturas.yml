@@ -1,0 +1,37 @@
+name: Capturas de tela
+
+on:
+  push:
+    branches: [capturas]
+    paths-ignore:
+      - "capturas/**"
+
+permissions:
+  contents: write
+
+jobs:
+  capturas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Gerar capturas
+        run: |
+          export FONTES_MATERIAL="$(dirname "$(which flutter)")/cache/artifacts/material_fonts"
+          ls "$FONTES_MATERIAL"
+          rm -rf capturas
+          flutter test test/capturas_test.dart -r expanded 2>&1 | tee capturas.log || true
+          ls -la capturas || true
+      - name: Salvar no branch
+        run: |
+          mkdir -p capturas && cp capturas.log capturas/
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add capturas
+          git commit -m "Capturas de tela geradas" || echo "sem mudanças"
+          git push

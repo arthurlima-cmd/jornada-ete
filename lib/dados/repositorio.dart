@@ -18,6 +18,36 @@ class ErroApp implements Exception {
 class Repo {
   Repo._();
 
+  // ---- Modo demonstração: usado só pelo teste que gera capturas de tela ----
+  static bool demo = false;
+  static List<Map<String, dynamic>> demoRegistros = [];
+  static List<Prova> demoProvas = [];
+  static List<Aviso> demoAvisos = [];
+  static List<EventoAgenda> demoEventos = [];
+
+  static List<Horario> _demoHorarios(bool Function(Map<String, dynamic>) filtro) {
+    final lista = demoRegistros.where(filtro).toList()
+      ..sort((a, b) => (a['aula'] as num).compareTo(b['aula'] as num));
+    final saida = <Horario>[];
+    for (final r in lista) {
+      final turma = r['turma'] as String;
+      final aulas = aulasDaTurma(turma);
+      final n = (r['aula'] as num).toInt();
+      if (n < 1 || n > aulas.length) continue;
+      saida.add(Horario(
+        id: '${turma}_${r['dia']}_$n',
+        disciplina: r['disciplina'] as String,
+        conteudo: '',
+        horario: aulas[n - 1],
+        diaSemana: r['dia'] as String,
+        turma: turma,
+        professor: null,
+        professorNome: r['professor'] as String,
+      ));
+    }
+    return saida;
+  }
+
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
   static CollectionReference<Map<String, dynamic>> _col(String nome) =>
       _db.collection(nome);
@@ -80,7 +110,9 @@ class Repo {
   static List<String> aulasDaTurma(String nome) =>
       aulasDaModalidade(modalidadeDaTurma(nome));
 
-  static Stream<List<Turma>> turmas() => _col('turmas').snapshots().map((s) {
+  static Stream<List<Turma>> turmas() => demo
+      ? Stream.value(const <Turma>[])
+      : _col('turmas').snapshots().map((s) {
         final lista = s.docs.map(Turma.doDoc).where((t) => t.nome.isNotEmpty).toList();
         lista.sort((a, b) {
           final c = a.ordem.compareTo(b.ordem);
@@ -135,7 +167,9 @@ class Repo {
     return lista;
   }
 
-  static Stream<List<Horario>> horariosDaTurma(String turma, String dia) =>
+  static Stream<List<Horario>> horariosDaTurma(String turma, String dia) => demo
+      ? Stream.value(_demoHorarios((r) => r['turma'] == turma && r['dia'] == dia))
+      :
       _col('horarios')
           .where('turma', isEqualTo: turma)
           .where('dia_semana', isEqualTo: dia)
@@ -144,7 +178,9 @@ class Repo {
 
   /// Aulas do professor no dia: as que ele cadastrou e as do horário oficial
   /// em que o nome dele aparece (ex.: "Ana Nayara" para "Ana Nayara Silva").
-  static Stream<List<Horario>> horariosDoProfessor(Usuario prof, String dia) =>
+  static Stream<List<Horario>> horariosDoProfessor(Usuario prof, String dia) => demo
+      ? Stream.value(_demoHorarios((r) => r['dia'] == dia && nomeCombina(r['professor'] as String, prof.nome)))
+      :
       _col('horarios')
           .where('dia_semana', isEqualTo: dia)
           .snapshots()
@@ -281,7 +317,9 @@ class Repo {
     return lista;
   }
 
-  static Stream<List<Prova>> provasDaTurma(String turma) => _col('provas')
+  static Stream<List<Prova>> provasDaTurma(String turma) => demo
+      ? Stream.value(demoProvas.where((p) => p.turma == turma).toList())
+      : _col('provas')
       .where('turma', isEqualTo: turma)
       .snapshots()
       .map(_ordenarProvas);
@@ -316,7 +354,9 @@ class Repo {
   static Future<void> excluirProva(String id) => _col('provas').doc(id).delete();
 
   // --------------------------------------------------------------- avisos
-  static Stream<List<Aviso>> avisos() => _col('avisos')
+  static Stream<List<Aviso>> avisos() => demo
+      ? Stream.value(demoAvisos)
+      : _col('avisos')
       .orderBy('criado_em', descending: true)
       .limit(100)
       .snapshots()
@@ -345,7 +385,9 @@ class Repo {
   static Future<void> excluirAviso(String id) => _col('avisos').doc(id).delete();
 
   // --------------------------------------------------------------- agenda
-  static Stream<List<EventoAgenda>> eventosAgenda() =>
+  static Stream<List<EventoAgenda>> eventosAgenda() => demo
+      ? Stream.value(demoEventos)
+      :
       _col('eventos').snapshots().map((s) {
         final lista = s.docs.map(EventoAgenda.doDoc).toList();
         lista.sort((a, b) =>
