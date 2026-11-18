@@ -35,6 +35,7 @@ ThemeData temaJornada() {
       centerTitle: true,
       elevation: 0,
       titleTextStyle: TextStyle(
+        fontFamily: 'Roboto',
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.w600,
@@ -58,7 +59,7 @@ ThemeData temaJornada() {
       style: FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(50),
         shape: RoundedRectangleBorder(borderRadius: raio),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: const TextStyle(fontFamily: 'Roboto', fontSize: 16, fontWeight: FontWeight.w600),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(

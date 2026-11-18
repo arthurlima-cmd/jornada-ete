@@ -203,7 +203,9 @@ void main() {
     await _preparar(tester);
     await tester.pumpWidget(_app(const SplashTela()));
     await _imagens(tester);
-    await tester.pump(const Duration(milliseconds: 2600));
+    await tester.pump(const Duration(milliseconds: 900));
+    await capturar(tester, '01a_splash_inicio');
+    await tester.pump(const Duration(milliseconds: 700));
     await capturar(tester, '01_splash');
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(seconds: 5));
@@ -227,6 +229,11 @@ void main() {
     await _preparar(tester);
     await tester.pumpWidget(_app(const InicioShell(usuario: aluno)));
     await capturar(tester, '05_inicio_estudante');
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, -700));
+    await tester.pump(const Duration(seconds: 1));
+    await capturar(tester, '05b_inicio_estudante_rolado');
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, 3000));
+    await tester.pump(const Duration(seconds: 1));
     final abas = {'Horários': '06_horarios', 'Provas': '07_provas', 'Avisos': '08_avisos', 'Perfil': '09_perfil'};
     for (final a in abas.entries) {
       await tester.tap(find.text(a.key).last);
@@ -241,9 +248,6 @@ void main() {
     await _preparar(tester);
     await tester.pumpWidget(_app(const InicioShell(usuario: professor)));
     await capturar(tester, '11_inicio_professor');
-    await tester.tap(find.text('Horários').last);
-    await tester.pump(const Duration(milliseconds: 600));
-    await capturar(tester, '12_horarios_professor');
     await tester.tap(find.text('Perfil').last);
     await tester.pump(const Duration(milliseconds: 600));
     await capturar(tester, '13_perfil_professor');
@@ -267,7 +271,5 @@ void main() {
     await _preparar(tester);
     await tester.pumpWidget(_app(const InfoEscolaTela()));
     await capturar(tester, '17_info_escola');
-    await _rolarAteFim(tester);
-    await capturar(tester, '18_info_escola_fim');
   });
 }
