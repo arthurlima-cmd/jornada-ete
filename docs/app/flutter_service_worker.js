@@ -1,31 +1,11 @@
-'use strict';
-
-self.addEventListener('install', () => {
-  self.skipWaiting();
-});
-
+// Remove o cache antigo do Jornada ETEADC e desinstala este service worker.
+self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    (async () => {
-      try {
-        await self.registration.unregister();
-      } catch (e) {
-        console.warn('Failed to unregister the service worker:', e);
-      }
-
-      try {
-        const clients = await self.clients.matchAll({
-          type: 'window',
-        });
-        // Reload clients to ensure they are not using the old service worker.
-        clients.forEach((client) => {
-          if (client.url && 'navigate' in client) {
-            client.navigate(client.url);
-          }
-        });
-      } catch (e) {
-        console.warn('Failed to navigate some service worker clients:', e);
-      }
-    })()
-  );
+  event.waitUntil((async () => {
+    const chaves = await caches.keys();
+    await Promise.all(chaves.map((c) => caches.delete(c)));
+    await self.registration.unregister();
+    const janelas = await self.clients.matchAll({ type: 'window' });
+    janelas.forEach((j) => j.navigate(j.url));
+  })());
 });

@@ -54,6 +54,29 @@
     For more details:
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
+    <script id="jornada-limpa-cache">
+    // Versões antigas do site ficavam presas no cache do navegador.
+    // Remove service workers e caches que sobraram e recarrega uma única vez.
+    (function () {
+      if (!('serviceWorker' in navigator)) return;
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        if (!regs.length) return;
+        var limpezas = regs.map(function (r) { return r.unregister(); });
+        if (window.caches) {
+          limpezas.push(caches.keys().then(function (ks) {
+            return Promise.all(ks.map(function (k) { return caches.delete(k); }));
+          }));
+        }
+        Promise.all(limpezas).then(function () {
+          try {
+            if (sessionStorage.getItem('jornada-recarregou')) return;
+            sessionStorage.setItem('jornada-recarregou', '1');
+          } catch (e) { return; }
+          location.reload();
+        });
+      });
+    })();
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
