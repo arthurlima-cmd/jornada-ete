@@ -49,6 +49,9 @@ jobs:
       - name: Compilar para navegador
         run: flutter build web --release --base-href /jornada-ete/app/
 
+      - name: Garantir que a versão nova apareça (sem cache antigo)
+        run: python3 tool/pos_build_web.py build/web
+
       - name: Publicar em docs/app
         run: |
           rm -rf docs/app
